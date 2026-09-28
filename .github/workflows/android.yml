@@ -29,8 +29,9 @@ jobs:
       # so failures are readable from the run summary without downloading logs.
       ANNOTATE: |
         annotate() {
-          local log; log=$(mktemp)
-          "$@" 2>&1 | tee "$log"; local rc=${PIPESTATUS[0]}
+          local log rc=0; log=$(mktemp)
+          "$@" > "$log" 2>&1 || rc=$?   # steps run with bash -e; capture instead of exiting
+          cat "$log"
           if [ "$rc" -ne 0 ]; then
             local msg; msg=$(tail -n 80 "$log" | tr -d "\r" | sed -e "s/%/%25/g" | awk 1 ORS="%0A")
             echo "::error title=$1 $2 failed::$msg"
