@@ -71,7 +71,7 @@ jobs:
       - name: Build APK
         run: |
           eval "$ANNOTATE"
-          annotate flutter build apk --release \\
+          annotate flutter build apk --release \
             --build-name 0.1.0 \
             --build-number "${GITHUB_RUN_NUMBER}" \
             --dart-define=APP_VERSION="${{ steps.version.outputs.name }}" \
