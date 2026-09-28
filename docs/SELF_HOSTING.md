@@ -1,5 +1,8 @@
 # Self-hosting
 
+**Not technical?** Follow the browser-only guide in the [README](../README.md#set-up-your-own-free-server-no-technical-skills-needed)
+instead — it uses GitHub Actions to deploy, no command line needed.
+
 The backend is a single Cloudflare Worker with a SQLite-backed Durable Object per group. A
 family-sized deployment typically fits in Cloudflare's free/entry tiers because idle groups
 hibernate and cost nothing.
