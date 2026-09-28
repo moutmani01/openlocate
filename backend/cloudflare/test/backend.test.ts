@@ -360,8 +360,13 @@ describe("abuse limits", () => {
     const path = `/v1/groups/${gid}/events`;
     const body = utf8("x".repeat(300 * 1024));
     // The Worker answers 413 from Content-Length without reading the body, so the runtime may
-    // reset the connection while the client is still uploading. Either outcome is a rejection.
-    const outcome = await fetch(url + path, { method: "POST", headers: signRequest(alice.id, "POST", path, body), body }).then(
+    // reset or stall the connection while the client is still uploading. Any of these is a rejection.
+    const outcome = await fetch(url + path, {
+      method: "POST",
+      headers: signRequest(alice.id, "POST", path, body),
+      body,
+      signal: AbortSignal.timeout(5000),
+    }).then(
       (r) => r.status,
       () => "connection reset",
     );

@@ -23,10 +23,24 @@ jobs:
     defaults:
       run:
         working-directory: apps/mobile
+        shell: bash
+    env:
+      # Runs a command; if it fails, the tail of its output becomes an error annotation on the run,
+      # so failures are readable from the run summary without downloading logs.
+      ANNOTATE: |
+        annotate() {
+          local log; log=$(mktemp)
+          "$@" 2>&1 | tee "$log"; local rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            local msg; msg=$(tail -n 80 "$log" | tr -d "\r" | sed -e "s/%/%25/g" | awk 1 ORS="%0A")
+            echo "::error title=$1 $2 failed::$msg"
+          fi
+          return "$rc"
+        }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -51,12 +65,13 @@ jobs:
         run: flutter create --platforms android --org org.openlocate --project-name openlocate .
 
       - run: flutter pub get
-      - run: flutter analyze --no-fatal-infos
-      - run: flutter test
+      - run: eval "$ANNOTATE"; annotate flutter analyze --no-fatal-infos
+      - run: eval "$ANNOTATE"; annotate flutter test
 
       - name: Build APK
         run: |
-          flutter build apk --release \
+          eval "$ANNOTATE"
+          annotate flutter build apk --release \\
             --build-name 0.1.0 \
             --build-number "${GITHUB_RUN_NUMBER}" \
             --dart-define=APP_VERSION="${{ steps.version.outputs.name }}" \
