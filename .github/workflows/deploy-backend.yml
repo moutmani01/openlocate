@@ -1,0 +1,53 @@
+name: Deploy backend
+
+# Deploys backend/cloudflare to the Cloudflare account configured in the repository secrets
+# CLOUDFLARE_API_TOKEN (token with "Edit Cloudflare Workers" permission) and CLOUDFLARE_ACCOUNT_ID.
+# Without them the job just prints a notice, so forks and self-hosters are unaffected.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/cloudflare/**"
+      - "packages/protocol/**"
+      - ".github/workflows/deploy-backend.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-backend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Check credentials
+        id: creds
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::notice::Backend not deployed: set the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.creds.outputs.ok == 'true'
+        uses: actions/checkout@v5
+      - if: steps.creds.outputs.ok == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.creds.outputs.ok == 'true'
+        run: npm ci
+      - if: steps.creds.outputs.ok == 'true'
+        run: npm test
+      - if: steps.creds.outputs.ok == 'true'
+        name: Deploy
+        working-directory: backend/cloudflare
+        run: npx wrangler deploy

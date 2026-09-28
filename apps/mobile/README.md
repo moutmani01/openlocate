@@ -1,43 +1,48 @@
 # OpenLocate mobile (Flutter)
 
-Not scaffolded yet: the development machine for step 1 had no Flutter/Android SDK, and we
-don't commit code that hasn't been built. This is the plan for step 2.
+Android beta. iOS comes later (needs a Mac or a cloud macOS build plus an Apple Developer account).
 
-## Stack
-| Concern | Choice |
+## Get a test build
+- **Beta releases:** download the `.apk` from the repository's
+  [Releases](../../../releases) page (pre-releases), on your Android phone.
+- **Every push:** the *Android* workflow attaches an APK artifact to each run.
+
+Test instructions and known limitations for testers are in [BETA_NOTES.md](BETA_NOTES.md).
+
+## How it's built
+Only `lib/`, `test/`, `pubspec.yaml` and the customised
+`android/app/src/main/AndroidManifest.xml` are committed. CI runs
+`flutter create --platforms android --org org.openlocate --project-name openlocate .` to generate
+the remaining standard Gradle/Flutter files (it never overwrites committed files), then
+`flutter analyze`, `flutter test` and `flutter build apk`.
+
+Locally (with Flutter stable and the Android SDK):
+
+```bash
+cd apps/mobile
+flutter create --platforms android --org org.openlocate --project-name openlocate .
+flutter test
+flutter run --dart-define=BACKEND_URL=https://your-backend.example
+```
+
+## Layout
+| Path | What |
 |---|---|
-| UI | Flutter (stable) |
-| Android location | Kotlin, `FusedLocationProviderClient` inside a foreground service (`foregroundServiceType="location"`), Activity Recognition for moving/stationary |
-| iOS location | Swift, `CLLocationManager` (`allowsBackgroundLocationUpdates`, `distanceFilter`, `activityType`, significant-change when stationary), `CMMotionActivityManager` |
-| Bridge | Platform channels (`MethodChannel` + `EventChannel`) — one small native module per platform |
-| Crypto | `sodium_libs` (libsodium, same primitives as `packages/crypto`) |
-| Secure storage | `flutter_secure_storage` (Keystore / Keychain, `first_unlock_this_device`) |
-| Local DB | `sqflite_sqlcipher`, key in secure storage |
-| Map | `maplibre_gl`, style URL configurable (OSM-based by default) |
-| QR | `mobile_scanner` (scan), `qr_flutter` (show) |
-| Network | `web_socket_channel` + `http`; `flutter_webrtc` for P2P (v0.2) |
+| `lib/crypto/ol_crypto.dart` | Dart port of `packages/crypto` (libsodium via `sodium`), verified byte-for-byte against `packages/crypto/test/vectors.json` |
+| `lib/backend/` | `BackendProvider` interface + `HttpProvider` (protocol v1) |
+| `lib/state/app_state.dart` | Identity, group, key cards, sharing, live connection, offline queue |
+| `lib/location/tracker.dart` | Foreground-service location via `geolocator` (visible notification; no background hacks) |
+| `lib/ui/` | Welcome, map + members, invite QR, scanner, member history, settings |
 
-## Structure
-```
-apps/mobile/
-├── lib/
-│   ├── main.dart
-│   ├── config.dart                 BACKEND_URL, TURN_SERVER, MAP_STYLE_URL via --dart-define
-│   ├── crypto/                     Dart port of packages/crypto (+ shared test vectors)
-│   ├── backend/
-│   │   ├── backend_provider.dart   mirrors packages/client/src/provider.ts
-│   │   └── http_provider.dart
-│   ├── location/
-│   │   ├── location_service.dart   Dart side of the platform channel
-│   │   └── modes.dart              battery modes → native request parameters
-│   ├── storage/                    SQLCipher history + offline queue
-│   ├── maps/map_provider.dart
-│   └── ui/                         map, member list, member detail, settings, pairing
-├── android/app/src/main/kotlin/.../LocationService.kt
-└── ios/Runner/LocationModule.swift
-```
+## Configuration (`--dart-define`)
+| Name | Default | Meaning |
+|---|---|---|
+| `BACKEND_URL` | empty (asked on first run) | OpenLocate server; CI uses the `BACKEND_URL` repository variable |
+| `MAP_TILE_URL` | OpenStreetMap tiles | Raster tile template; use your own tile server for wide distribution |
+| `APP_VERSION` | `dev` | Shown in Settings |
 
-## To start step 2
-Install Flutter stable, Android Studio (SDK + an emulator) and, for iOS, Xcode on a Mac. Then
-`flutter create --org org.openlocate --platforms android,ios apps/mobile` and build up from
-there.
+## Dependencies worth knowing
+- `mobile_scanner` uses Google ML Kit on Android (proprietary, bundled model). Planned
+  replacement: an open-source ZXing-based scanner.
+- `geolocator` uses Google Play Services' fused provider when available and falls back to the
+  platform `LocationManager` otherwise.

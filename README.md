@@ -2,7 +2,7 @@
 
 **Private, lightweight, open-source location sharing.**
 
-- ✓ Android & iOS *(mobile app in progress — see [status](#status))*
+- ✓ Android *(beta)* · iOS planned — see [status](#status)
 - ✓ Live location, with a configurable desired update interval
 - ✓ End-to-end encrypted location and history — the server only stores ciphertext
 - ✓ Sharing is per person and never automatically reciprocal
@@ -22,7 +22,8 @@ That service is blind — it sees encrypted blobs, never where you are.
 |---|---|
 | Protocol v1, crypto, threat model | ✅ Specified and implemented (TypeScript reference) |
 | Cloudflare backend | ✅ Implemented, 21 end-to-end tests |
-| Flutter mobile app | ⬜ Next milestone ([apps/mobile](apps/mobile/README.md)) |
+| Android app (Flutter) | 🧪 Beta — APKs on the Releases page ([apps/mobile](apps/mobile/README.md)) |
+| iOS app | ⬜ Needs macOS build + Apple Developer account |
 | Web viewer | ⬜ v0.3 |
 
 See [docs/ROADMAP.md](docs/ROADMAP.md).
@@ -88,7 +89,7 @@ npm run dev:backend # local backend on http://localhost:8787
 | `packages/crypto` | libsodium reference crypto |
 | `packages/client` | `BackendProvider` interface, HTTP provider, sharing/keyring logic |
 | `backend/cloudflare` | Cloudflare Workers + SQLite Durable Objects backend |
-| `apps/mobile` | Flutter app (next) |
+| `apps/mobile` | Flutter app (Android beta) |
 | `docs` | Architecture, protocol, threat model, battery, self-hosting, roadmap |
 
 ## Contributing
