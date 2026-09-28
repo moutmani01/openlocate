@@ -1,0 +1,20 @@
+{
+  "name": "@openlocate/backend-cloudflare",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@openlocate/protocol": "0.1.0"
+  },
+  "devDependencies": {
+    "@openlocate/client": "0.1.0",
+    "@openlocate/crypto": "0.1.0",
+    "@cloudflare/workers-types": "^5.20260927.1",
+    "wrangler": "^4.142.0"
+  }
+}

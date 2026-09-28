@@ -1,0 +1,20 @@
+name = "openlocate"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# No request logging: Workers Logs / Logpush stay off by default. See docs/SELF_HOSTING.md.
+[observability]
+enabled = false
+
+[[durable_objects.bindings]]
+name = "GROUP"
+class_name = "GroupDurableObject"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GroupDurableObject"]
+
+[vars]
+# Hard upper bound on stored history, in days (clients choose shorter retention per event).
+MAX_RETENTION_DAYS = "90"
+ALLOWED_ORIGIN = "*"

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+*.log
+.DS_Store
+coverage/
+# Flutter (apps/mobile)
+apps/mobile/build/
+apps/mobile/.dart_tool/

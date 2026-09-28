@@ -1,0 +1,25 @@
+{
+  "name": "openlocate",
+  "private": true,
+  "description": "Private, lightweight, open-source location sharing.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "backend/cloudflare"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p packages/protocol && tsc -p packages/crypto && tsc -p packages/client && tsc -p backend/cloudflare",
+    "dev:backend": "npm run dev -w @openlocate/backend-cloudflare",
+    "deploy:backend": "npm run deploy -w @openlocate/backend-cloudflare"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
