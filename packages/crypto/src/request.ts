@@ -2,9 +2,9 @@ import { AUTH_HEADERS, WS_AUTH_PARAMS, requestSigningPayload, toB64url } from "@
 import type { DeviceIdentity } from "./identity";
 import { sodium } from "./sodium";
 
-function sign(id: DeviceIdentity, method: string, target: string, body: Uint8Array, now: number) {
+function sign(id: DeviceIdentity, method: string, target: string, body: Uint8Array, now: number, fixedNonce?: string) {
   const s = sodium();
-  const nonce = toB64url(s.randombytes_buf(16));
+  const nonce = fixedNonce ?? toB64url(s.randombytes_buf(16));
   const payload = requestSigningPayload(method, target, now, nonce, toB64url(s.crypto_hash_sha256(body)));
   return { nonce, signature: toB64url(s.crypto_sign_detached(payload, id.signSk)) };
 }
@@ -16,8 +16,10 @@ export function signRequest(
   target: string,
   body: Uint8Array = new Uint8Array(0),
   now = Date.now(),
+  /** Test vectors only. Real requests must use a fresh random nonce. */
+  fixedNonce?: string,
 ): Record<string, string> {
-  const { nonce, signature } = sign(id, method, target, body, now);
+  const { nonce, signature } = sign(id, method, target, body, now, fixedNonce);
   return {
     [AUTH_HEADERS.signPk]: toB64url(id.signPk),
     [AUTH_HEADERS.timestamp]: String(now),

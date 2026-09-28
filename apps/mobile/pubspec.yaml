@@ -1,0 +1,31 @@
+name: openlocate
+description: Private, lightweight, open-source location sharing.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  crypto: ^3.0.7
+  flutter_map: ^8.3.2
+  flutter_secure_storage: ^11.2.0
+  geolocator: ^14.1.1
+  http: ^1.6.0
+  latlong2: ^0.10.1
+  mobile_scanner: ^7.4.2
+  qr_flutter: ^4.1.0
+  shared_preferences: ^2.5.5
+  sodium: ^4.1.1
+  web_socket_channel: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

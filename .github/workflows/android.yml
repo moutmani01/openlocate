@@ -1,0 +1,80 @@
+name: Android
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths:
+      - "apps/mobile/**"
+      - "packages/crypto/test/vectors.json"
+      - ".github/workflows/android.yml"
+  pull_request:
+    paths:
+      - "apps/mobile/**"
+      - "packages/crypto/test/vectors.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write # to publish pre-releases for v* tags
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Version
+        id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "name=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=0.1.0-dev.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Only lib/, test/ and the customised AndroidManifest are committed; this generates the
+      # remaining standard Flutter/Gradle files without overwriting ours.
+      - name: Generate platform files
+        run: flutter create --platforms android --org org.openlocate --project-name openlocate .
+
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter test
+
+      - name: Build APK
+        run: |
+          flutter build apk --release \
+            --build-name 0.1.0 \
+            --build-number "${GITHUB_RUN_NUMBER}" \
+            --dart-define=APP_VERSION="${{ steps.version.outputs.name }}" \
+            --dart-define=BACKEND_URL="${{ vars.BACKEND_URL }}"
+          mv build/app/outputs/flutter-apk/app-release.apk "openlocate-${{ steps.version.outputs.name }}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openlocate-${{ steps.version.outputs.name }}
+          path: apps/mobile/openlocate-*.apk
+
+      - name: Publish pre-release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "openlocate-${{ steps.version.outputs.name }}.apk" \
+            --repo "$GITHUB_REPOSITORY" \
+            --prerelease \
+            --title "OpenLocate ${{ steps.version.outputs.name }}" \
+            --notes-file ../../apps/mobile/BETA_NOTES.md

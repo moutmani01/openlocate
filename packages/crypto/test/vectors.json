@@ -1,0 +1,65 @@
+{
+  "group_id": "R3JvdXBHcm91cEdyb3VwMQ",
+  "alice": {
+    "sign_seed": "AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA",
+    "box_seed": "ISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0-P0A",
+    "keys": {
+      "device_id": "ZbYGc9btiEvwHCwiLYKtoA",
+      "sign_pk": "ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ",
+      "box_pk": "V3-u8AYN_QDAOScrxv58Qmic4W20e2_CqkHRmBn_qTY",
+      "box_sig": "KDIu7_Pq3ZCnK9MAr838Ua0d9NKWy_IXD04baM1WxF0nJHor2uSOeBGHe4y_jGmARBrbOh9zqYD8b53l0iknDQ"
+    },
+    "safety_number": "97451 87444 55616 29030 88435 46760 35005 49428 08683 29972 35648 07078"
+  },
+  "bob": {
+    "sign_seed": "QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVpbXF1eX2A",
+    "box_seed": "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1-f4A",
+    "keys": {
+      "device_id": "uoES-kuj1vk0sq0qoGlmAg",
+      "sign_pk": "rcFAEfgtHFbZVqpPnXPYhYNhpgYEhSXg0Ixjjcdd2Mc",
+      "box_pk": "kjdZZ00a9DxSLojIyhEb6L0CmMwXB0KKjN49XVtODFo",
+      "box_sig": "VR5HUJ1hmjXIHO2rqYBQvfCLYaB1MhWbwQFCtB6P8FxyWA62vNT2Em_KSypSo2gSrGcUvFLMX7LvoKil5lKEBg"
+    }
+  },
+  "request": {
+    "method": "POST",
+    "target": "/v1/groups/R3JvdXBHcm91cEdyb3VwMQ/events?x=1",
+    "timestamp": 1789320000000,
+    "body": "{\"events\":[]}",
+    "nonce": "tLW2t7i5uru8vb6_wMHCww",
+    "body_sha256": "JN4cShnEOtQbAT8T3NhYwXsNqn8zpT8ZkT5bETZtHC4",
+    "payload": "OL1-REQ\nPOST\n/v1/groups/R3JvdXBHcm91cEdyb3VwMQ/events?x=1\n1789320000000\ntLW2t7i5uru8vb6_wMHCww\nJN4cShnEOtQbAT8T3NhYwXsNqn8zpT8ZkT5bETZtHC4",
+    "signature": "xsBtyIABGkOCAhygf4WPCXNM45qCd36MyFMJqygEy6BDxwF81qnUsHnA4yeMcpuYkWORZS0SQBPJ-FjlUfSbCQ"
+  },
+  "invite": {
+    "secret": "gYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6A",
+    "invite_id": "2MBdn_-N37V9IpF5svaceA",
+    "auth_key": "X9KUBEmyC-0ekYTKMVThCnuvUyGhLYyMtLyX3azQ9sE",
+    "auth_hash": "QtPJ9SSobsXudL_kxVaRXXd3E93OamNCLVjHIKBSpU0",
+    "mac_key": "9sHFKMeZm4ActEX3ZW8eXp4Qu2GSMWK0AL99CrZeXTA",
+    "bob_binding": "ybT_Kqi95ObNYiRVDdUMUGdiJBNFxmrlfwCFCAbFBvA"
+  },
+  "location": {
+    "key": "oaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2-v8A",
+    "group_id": "R3JvdXBHcm91cEdyb3VwMQ",
+    "device_id": "ZbYGc9btiEvwHCwiLYKtoA",
+    "event_id": "ZbYGc9btiEvwHCwiLYKtoA:AAAAAAAAAAAAAAAAAAAAAA",
+    "epoch": 7,
+    "nonce": "yMnKy8zNzs_Q0dLT1NXW19jZ2tvc3d7f",
+    "point": {
+      "ts": 1789320000,
+      "lat": 33.57311,
+      "lon": -7.589843,
+      "acc": 12,
+      "spd": 4.2,
+      "hdg": 120
+    },
+    "payload": "yMnKy8zNzs_Q0dLT1NXW19jZ2tvc3d7f4VxkjJEFepC0j5H4x9qBSqg_ht7ChdtRW8KhXfDrgOfcpP1w8g7JtRaxOLubbz3muWElpZtzOJ5LJDcCkI4Ea8-PE2qCdPx02ggyZqWzbm3crTsMhF4TIOW9rKJb_Z3qfB4BDaNgs7u6R4pBAA_1DjGsjZOPCI6iUVNdT1RL75hMR8lBLFFVrFNDWiYzCQ1i"
+  },
+  "card": {
+    "envelope": {
+      "sealed": "zfJp7n7hxpsisXJ8OrN_UmhBhRlc61bQ69a_y6SFNyPeBdsQ9c8b8drAIM98i8l3O63IlYaBky6cH6donM371UZrXmgvE_-Kj2HcKEltzovPjjf0AFPKLZEe8zXt-5I9RCJ2e0yEUItvGvevtrALMlLELmcRC8vJaFAEpJHKiB_vyyLUxXRSzNloMFwsqYEaeJwwX9U-HpqXljkl7gy7DCrxTsu_dsDBAqQ6HRGNhPM-9IDtr4IpwFABFAIOiBVKt4YnbRW2XQCFoVV9uDIdFbNcCxikfB6e4Qgjyxz1UfAGn6t4KfZzzTNZkM7U60ik53hRxAeJ_cE_nQoVn7RH5T9STtLQ6OJvmqpbrhAz4A02lIEHhw",
+      "sig": "Gs04YuI4LbQM_XrphIa_W8jgiOKdhJDuUOCArbcDlv8B2-UfKUaniiuxErASAng0mZuBWgaTcQWY-zJo2iWPDg"
+    }
+  }
+}
