@@ -8,7 +8,7 @@ import 'ui/welcome_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final state = AppState(OlCrypto(SodiumSumoInit.init()));
+  final state = AppState(OlCrypto(await SodiumSumoInit.init()));
   await state.init();
   runApp(OpenLocateApp(state: state));
 }

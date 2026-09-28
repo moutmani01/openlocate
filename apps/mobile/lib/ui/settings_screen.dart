@@ -79,24 +79,30 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          for (final m in BatteryMode.values)
-            RadioListTile<BatteryMode>(
-              value: m,
-              groupValue: s.mode,
-              onChanged: (v) => s.setMode(v!),
-              title: Text(m.label),
-              subtitle: Text(m.description),
+          RadioGroup<BatteryMode>(
+            groupValue: s.mode,
+            onChanged: (v) {
+              if (v != null) s.setMode(v);
+            },
+            child: Column(
+              children: [
+                for (final m in BatteryMode.values) RadioListTile<BatteryMode>(value: m, title: Text(m.label), subtitle: Text(m.description)),
+              ],
             ),
+          ),
           const Divider(),
           _Header('History'),
-          for (final e in _retentions.entries)
-            RadioListTile<int>(
-              value: e.key,
-              groupValue: s.retentionHours,
-              onChanged: (v) => s.setRetention(v!),
-              title: Text(e.value),
-              dense: true,
+          RadioGroup<int>(
+            groupValue: s.retentionHours,
+            onChanged: (v) {
+              if (v != null) s.setRetention(v);
+            },
+            child: Column(
+              children: [
+                for (final e in _retentions.entries) RadioListTile<int>(value: e.key, title: Text(e.value), dense: true),
+              ],
             ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text('Applies to new updates. The server deletes each point automatically when it expires.', style: theme.textTheme.bodySmall),

@@ -75,7 +75,7 @@ class HttpProvider implements BackendProvider {
 
   @override
   Future<HistoryPage> getHistory(String groupId, {int after = 0, String? from, int? limit}) async {
-    final q = <String, String>{'after': '$after', if (from != null) 'from': from, if (limit != null) 'limit': '$limit'};
+    final q = <String, String>{'after': '$after', 'from': ?from, if (limit != null) 'limit': '$limit'};
     final r = await _call('GET', _g(groupId, '/events?${Uri(queryParameters: q).query}')) as Map<String, dynamic>;
     return HistoryPage(
       (r['events'] as List).map((e) => WireEvent.fromJson(e as Map<String, dynamic>)).toList(),

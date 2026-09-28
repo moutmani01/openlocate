@@ -10,8 +10,8 @@ void main() {
   late OlCrypto c;
   late Map<String, dynamic> v;
 
-  setUpAll(() {
-    c = OlCrypto(SodiumSumoInit.init());
+  setUpAll(() async {
+    c = OlCrypto(await SodiumSumoInit.init());
     v = jsonDecode(File('../../packages/crypto/test/vectors.json').readAsStringSync()) as Map<String, dynamic>;
   });
 
