@@ -17,13 +17,22 @@
 - Device identity (no account), QR pairing with single-use 10-minute invitations
 - Per-person sharing (never automatic in both directions), key rotation when someone loses access
 - End-to-end encrypted live location over one persistent connection; server history with retention (default 24 h)
-- Foreground-service tracking with a visible notification (works with the screen off)
+- Tracking in its own background service with a visible notification: it keeps running with the
+  screen off and after the app is swiped away, and the notification has a **Stop sharing** button
 - Battery modes: maximum / balanced / saver
-- Offline queue (in memory) that uploads when the connection returns
+- Offline queue on disk: positions taken without a connection survive the app or the phone
+  restarting, and upload when the connection returns
+- Settings → **Background reliability**: battery-optimisation exemption, optional "Allow all the
+  time" location access so Android can restart sharing by itself, optional resume after reboot
 
 ### Known limitations
 - Android only; iOS comes later.
-- Offline queue and received locations are kept in memory only — they are lost if the app is killed while offline.
+- Received locations are kept in memory only; they are fetched from the server again when the app opens.
+- If Android kills the app outright, sharing restarts by itself only when battery optimisation is
+  off **and** location access is "Allow all the time". Otherwise it resumes when you open the app,
+  which tells you it had stopped.
+- A person who is not moving sends no updates in *Balanced* and *Battery saver* modes, so their
+  position can look old even though sharing is working.
 - Map tiles come from openstreetmap.org (fine for testing, not for wide distribution).
 - Peer-to-peer (WebRTC) is not enabled yet; updates go through the encrypted relay.
 - QR scanning uses Google ML Kit via `mobile_scanner` (to be replaced with an open-source scanner).

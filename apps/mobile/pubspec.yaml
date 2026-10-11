@@ -21,6 +21,8 @@ dependencies:
   shared_preferences: ^2.5.5
   sodium: ^4.1.1
   web_socket_channel: ^3.0.3
+  flutter_foreground_task: ^11.0.3
+  path_provider: ^2.1.6
 
 dev_dependencies:
   flutter_test:

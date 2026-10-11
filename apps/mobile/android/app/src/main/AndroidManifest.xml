@@ -3,10 +3,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- Sharing with the screen off runs as a visible foreground service started while the app is
-         open, so "while in use" location permission is enough; no ACCESS_BACKGROUND_LOCATION. -->
+    <!-- Sharing runs in a foreground service (visible notification) started while the app is open,
+         so "while in use" location permission is enough to keep sharing with the screen off. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <!-- Optional, asked only from Settings: lets Android restart the service by itself after it
+         was stopped or the phone rebooted. Sharing works without it. -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- To show the system prompt that exempts the app from battery optimisation. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -34,6 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- Runs location/sharing_service.dart: tracking, encryption and upload. -->
+        <service
+            android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

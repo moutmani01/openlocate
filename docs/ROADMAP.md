@@ -23,20 +23,26 @@ new feature.
 - ⬜ **"Send diagnostic report" button.** The user sees exactly what will be sent and chooses
   to share it. Nothing is ever uploaded automatically. This follows the logging rules in
   [THREAT_MODEL.md](THREAT_MODEL.md).
-- ⬜ **Tracking that survives the screen being closed.** Today the location stream, the
-  encryption and the upload all run in the app's UI process. Move them into a real foreground
-  service that keeps running when the app is swiped away, and restarts after the system kills it.
-- ⬜ **Offline queue on disk.** Unsent fixes are kept in memory and are lost if the app is
-  killed. Store the already-encrypted events locally until they are delivered.
-- ⬜ **Battery-optimisation guidance.** Ask for the exemption when sharing is turned on, and
-  explain the extra step some manufacturers need (Xiaomi, Huawei, Samsung, OnePlus).
-- ⬜ **Tell people when sharing has stopped.** A notification on the sharer's phone when
-  tracking ends unexpectedly, and a clear "last updated" age for everyone watching.
-- ⬜ **Restart after reboot** (optional, off by default).
+- 🟨 **Tracking that survives the screen being closed.** The location stream, encryption and
+  upload now run in a foreground service with its own isolate, which keeps running when the app
+  is swiped away. Built and unit-tested; needs testing on real phones.
+- 🟨 **Offline queue on disk.** Already-encrypted events are kept in a local file until the
+  server accepts them. Built and unit-tested; needs testing on real phones.
+- 🟨 **Battery-optimisation guidance.** The app explains and asks for the exemption the first
+  time sharing is turned on, and Settings shows the current state with manufacturer advice.
+- 🟨 **Tell people when sharing has stopped.** The ongoing notification shows when sharing is
+  paused (location off, permission removed), and the app says so when it finds sharing had
+  stopped while it was closed. ⬜ Still missing: an alert at the moment Android kills the app
+  outright, which needs a separate watchdog.
+- ⬜ **Heartbeat while standing still.** In the distance-filtered modes a person who is not
+  moving sends nothing, so their position looks old. Re-send the last position occasionally.
+- 🟨 **Restart after reboot** (optional, off by default; needs "Allow all the time").
 - ⬜ **Soak tests.** 24-hour runs on at least a Pixel, a Samsung and a Xiaomi phone, with the
   requested and actual update intervals published in [BATTERY.md](BATTERY.md).
-- ⬜ **Decide on background location permission.** The app deliberately asks only for
-  "while in use". Confirm that this is enough once tracking runs in its own service.
+- ✅ **Background location permission.** "While in use" stays enough to share with the screen
+  off. "Allow all the time" is optional and only lets Android restart the service by itself.
+- ⬜ **Measure the wake-lock trade-off.** Only *Maximum accuracy* keeps the CPU awake. Check on
+  real phones that uploads in the other modes are not delayed too long with the screen off.
 
 ### 2. Map privacy
 
@@ -90,7 +96,7 @@ Chat, social features, advertising, analytics, and any automatic upload of logs.
 - ✅ Mobile shell: Flutter app, map (flutter_map + OSM tiles), settings (step 2) — Android beta
 - ✅ Android location tracking as a foreground service (step 3); ⬜ iOS Core Location
 - ✅ Configurable desired interval + requested/actual display, battery modes (step 4)
-- 🟨 Offline queue (in memory); ⬜ local encrypted history on disk (SQLCipher) (step 5)
+- 🟨 Offline queue (on disk, in testing); ⬜ local encrypted history on disk (SQLCipher) (step 5)
 - ✅ Identity, QR pairing, per-person sharing, key rotation, live sync in the app (steps 6, 7, 9)
 - ✅ Stop sharing; ⬜ pause 1 h / pause until tomorrow
 - ✅ APK builds in GitHub Actions; `v*` tags publish beta pre-releases

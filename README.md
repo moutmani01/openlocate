@@ -49,8 +49,9 @@ Full details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) ·
 | Permission | Why | When |
 |---|---|---|
 | Location while using | show you on the map | first launch of the map |
-| Background location ("Allow all the time" / "Always") | keep sharing with the screen off | only when you turn sharing on |
+| Background location ("Allow all the time" / "Always", optional on Android) | let sharing restart by itself after Android stops it or the phone reboots | only if you choose it in Settings |
 | Notifications | Android requires a visible notification while sharing in the background | when sharing starts |
+| Unrestricted battery use (optional) | stop Android from closing the sharing service to save battery | first time you turn sharing on |
 | Camera | scan an invite QR code | when you tap *Scan* |
 
 Sharing is **off** by default. When it's on, the app always shows who can see you, how often

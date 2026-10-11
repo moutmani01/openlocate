@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:sodium/sodium_sumo.dart';
 
 import 'crypto/ol_crypto.dart';
+import 'location/tracker.dart';
 import 'state/app_state.dart';
 import 'ui/home_screen.dart';
 import 'ui/welcome_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Tracker.initPort();
   final state = AppState(OlCrypto(await SodiumSumoInit.init()));
   await state.init();
   runApp(OpenLocateApp(state: state));
