@@ -81,6 +81,24 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          if (s.notice != null)
+            MaterialBanner(
+              content: Text(s.notice!),
+              leading: const Icon(Icons.notification_important_outlined),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                  child: const Text('Keep it running'),
+                ),
+                TextButton(onPressed: s.dismissNotice, child: const Text('OK')),
+              ],
+            ),
+          if (s.sharingActive && s.serviceProblem != null)
+            MaterialBanner(
+              content: Text(s.serviceProblem!),
+              leading: const Icon(Icons.location_off_outlined),
+              actions: const [SizedBox.shrink()],
+            ),
           if (s.error != null || !s.connected)
             MaterialBanner(
               content: Text(s.error ?? 'Connecting…'),
@@ -123,6 +141,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+/// Turns sharing on or off. The first time it is turned on while Android restricts the app's
+/// battery use, explain why the exemption matters before showing the system prompt.
+Future<void> _toggleSharing(BuildContext context, AppState s, bool on) async {
+  await s.setSharingActive(on);
+  if (!on || !s.sharingActive || !s.shouldExplainBattery || !context.mounted) return;
+  await s.markBatteryExplained();
+  if (!context.mounted) return;
+  final allow = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text('Keep sharing in the background'),
+      content: const Text(
+        'Android may stop OpenLocate to save battery, and sharing would end without warning. '
+        'Allowing it to run unrestricted keeps sharing going with the screen off.\n\n'
+        'OpenLocate only wakes when your phone reports a new position.',
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Not now')),
+        FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Allow')),
+      ],
+    ),
+  );
+  if (allow == true) await s.requestBatteryExemption();
+}
+
 class _SharingCard extends StatelessWidget {
   const _SharingCard({required this.state});
 
@@ -148,7 +191,7 @@ class _SharingCard extends StatelessWidget {
                 Icon(s.sharingActive ? Icons.share_location : Icons.location_disabled),
                 const SizedBox(width: 12),
                 Expanded(child: Text(s.sharingActive ? 'Sharing my location' : 'Location sharing is off', style: theme.textTheme.titleMedium)),
-                Switch(value: s.sharingActive, onChanged: (v) => s.setSharingActive(v)),
+                Switch(value: s.sharingActive, onChanged: (v) => _toggleSharing(context, s, v)),
               ],
             ),
             Text(

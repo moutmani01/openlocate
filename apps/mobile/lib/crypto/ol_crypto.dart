@@ -67,6 +67,8 @@ class LocationPoint {
   final double? hdg;
   final double? bat;
 
+  Map<String, dynamic> toJson() => {'ts': ts, 'lat': lat, 'lon': lon, 'acc': ?acc, 'alt': ?alt, 'spd': ?spd, 'hdg': ?hdg, 'bat': ?bat};
+
   factory LocationPoint.fromJson(Map<String, dynamic> j) {
     double? d(String k) => (j[k] as num?)?.toDouble();
     return LocationPoint(

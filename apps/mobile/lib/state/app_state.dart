@@ -11,7 +11,10 @@ import '../backend/backend_provider.dart';
 import '../backend/http_provider.dart';
 import '../config.dart';
 import '../crypto/ol_crypto.dart';
+import '../format.dart';
 import '../location/tracker.dart';
+
+export '../format.dart' show formatAgo, formatInterval;
 
 class Peer {
   Peer({required this.deviceId, required this.name, required this.sharesWithMe});
@@ -31,7 +34,9 @@ class Fix {
 }
 
 /// Everything the UI needs. Persisted: identity/keys in OS secure storage, preferences in
-/// SharedPreferences. Locations are kept in memory only in this beta (server keeps history).
+/// SharedPreferences. Received locations are kept in memory only in this beta (the server keeps
+/// history). This device's own tracking runs in the background service (location/sharing_service.dart),
+/// which reports fixes and its queue back here while the app is open.
 class AppState extends ChangeNotifier {
   AppState(this.crypto);
 
@@ -48,6 +53,7 @@ class AppState extends ChangeNotifier {
   BatteryMode mode = BatteryMode.balanced;
   int retentionHours = 24;
   bool sharingActive = false;
+  bool restartOnBoot = false;
 
   // Group
   String? groupId;
@@ -75,17 +81,24 @@ class AppState extends ChangeNotifier {
   bool connected = false;
   Timer? _reconnect;
   int _backoff = 2;
-  final List<WireEvent> _queue = [];
 
-  // Tracking stats
-  Position? myPosition;
-  DateTime? _lastSent;
+  // Tracking, as reported by the background service
+  int queued = 0;
   final List<int> _intervals = [];
   String? error;
 
+  /// A problem the service reported (location off, permission removed).
+  String? serviceProblem;
+
+  /// Something the person should know once, such as sharing having stopped while the app was closed.
+  String? notice;
+
+  // Whether Android will let sharing keep running and restart by itself.
+  bool batteryExempt = true;
+  LocationPermission locationPermission = LocationPermission.denied;
+
   String get myId => identity.deviceId;
   bool get inGroup => groupId != null;
-  int get queued => _queue.length;
   String get safetyNumber => crypto.safetyNumber(identity.signPk);
 
   /// Average of the last few actual intervals between sent fixes, in seconds.
@@ -116,6 +129,8 @@ class AppState extends ChangeNotifier {
     intervalSeconds = _prefs.getInt('interval_s') ?? 60;
     mode = BatteryMode.values.byName(_prefs.getString('mode') ?? BatteryMode.balanced.name);
     retentionHours = _prefs.getInt('retention_h') ?? 24;
+    restartOnBoot = _prefs.getBool('restart_on_boot') ?? false;
+    tracker.listen(_onServiceData);
 
     final g = await _secure.read(key: 'group');
     if (g != null) {
@@ -128,8 +143,33 @@ class AppState extends ChangeNotifier {
       if (inv != null) _invites.addAll((jsonDecode(inv) as Map).cast<String, String>());
       _backend = HttpProvider(backendUrl, crypto, identity);
       unawaited(_connectAndSync());
-      if (_prefs.getBool('sharing_active') ?? false) unawaited(setSharingActive(true));
+      if (_prefs.getBool('sharing_active') ?? false) unawaited(_resumeSharing());
     }
+  }
+
+  /// Sharing was on when the app last ran. Normally the service is still running; if Android
+  /// stopped it in the meantime, say so and start it again now that the app is open.
+  Future<void> _resumeSharing() async {
+    try {
+      if (await tracker.running) {
+        sharingActive = true;
+        tracker.requestStatus();
+        notifyListeners();
+        return;
+      }
+      await setSharingActive(true);
+      notice = sharingActive
+          ? 'Sharing had stopped while the app was closed. It is back on now.'
+          : 'Sharing stopped while the app was closed and could not be turned back on.';
+    } catch (_) {
+      notice = 'Sharing stopped while the app was closed and could not be turned back on.';
+    }
+    notifyListeners();
+  }
+
+  void dismissNotice() {
+    notice = null;
+    notifyListeners();
   }
 
   void _loadSharing(String? json) {
@@ -166,6 +206,8 @@ class AppState extends ChangeNotifier {
         'old_keys': {for (final e in keep) '$e': b64url(_ownKeys[e]!)},
       }),
     );
+    // The service encrypts with the stored key: tell it straight away when the key or audience changes.
+    if (sharingActive) tracker.reload();
   }
 
   Future<void> _saveGroup() async {
@@ -191,7 +233,8 @@ class AppState extends ChangeNotifier {
     intervalSeconds = max(5, seconds);
     _intervals.clear();
     await _prefs.setInt('interval_s', intervalSeconds);
-    await _restartTracking();
+    if (sharingActive) tracker.reload();
+    notifyListeners();
   }
 
   Future<void> setMode(BatteryMode m) async {
@@ -203,6 +246,7 @@ class AppState extends ChangeNotifier {
   Future<void> setRetention(int hours) async {
     retentionHours = hours;
     await _prefs.setInt('retention_h', hours);
+    if (sharingActive) tracker.reload();
     notifyListeners();
   }
 
@@ -283,7 +327,8 @@ class AppState extends ChangeNotifier {
     history.clear();
     online.clear();
     unverified.clear();
-    _queue.clear();
+    await tracker.clearQueue();
+    queued = 0;
     _invites.clear();
     _historyCursor = 0;
     await _secure.delete(key: 'group');
@@ -366,62 +411,90 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> _restartTracking() async {
-    await tracker.stop();
     if (sharingActive && inGroup) {
-      final n = shareWith.length;
-      await tracker.start(
-        intervalSeconds: intervalSeconds,
+      await refreshReliability();
+      final problem = await tracker.start(
         mode: mode,
-        notificationText: 'Visible to $n ${n == 1 ? 'person' : 'people'} · every ${formatInterval(intervalSeconds)}',
-        onPosition: _onPosition,
+        notificationText: sharingNotificationText(shareWith.length, intervalSeconds),
+        restartOnBoot: restartOnBoot && locationPermission == LocationPermission.always,
       );
+      if (problem != null) {
+        sharingActive = false;
+        await _prefs.setBool('sharing_active', false);
+        error = 'Could not start sharing: $problem';
+      }
+    } else {
+      await tracker.stop();
+      serviceProblem = null;
     }
     notifyListeners();
   }
 
-  void _onPosition(Position pos) {
-    myPosition = pos;
-    final now = DateTime.now();
-    // The OS may deliver more often than asked; send at most once per desired interval.
-    if (_lastSent != null && now.difference(_lastSent!).inMilliseconds < intervalSeconds * 900) {
-      notifyListeners();
-      return;
+  /// Messages from the background service: each fix it sends, its queue length, and why it stopped.
+  void _onServiceData(Object data) {
+    if (data is! Map) return;
+    switch (data['type']) {
+      case 'fix':
+        try {
+          _addFix(myId, LocationPoint.fromJson(Map<String, dynamic>.from(data['point'] as Map)));
+        } catch (_) {
+          return;
+        }
+        final since = data['since_last_s'];
+        if (since is int) {
+          _intervals.add(since);
+          if (_intervals.length > 10) _intervals.removeAt(0);
+        }
+      case 'status':
+        queued = (data['queued'] as num?)?.toInt() ?? 0;
+        serviceProblem = data['problem'] as String?;
+      case 'stopped':
+        sharingActive = false;
+        serviceProblem = null;
+        _intervals.clear();
+        if (data['by_user'] != true) notice = data['reason'] as String? ?? 'Sharing has stopped.';
     }
-    if (_lastSent != null) {
-      _intervals.add(now.difference(_lastSent!).inSeconds);
-      if (_intervals.length > 10) _intervals.removeAt(0);
-    }
-    _lastSent = now;
+    notifyListeners();
+  }
 
-    final point = LocationPoint(
-      ts: pos.timestamp.millisecondsSinceEpoch ~/ 1000,
-      lat: pos.latitude,
-      lon: pos.longitude,
-      acc: pos.accuracy,
-      spd: pos.speed > 0 ? pos.speed : null,
-      hdg: pos.speed > 0.5 ? pos.heading : null,
-    );
-    final eventId = crypto.newEventId(myId);
-    final ctx = EventContext(groupId: groupId!, deviceId: myId, eventId: eventId, epoch: _epoch);
-    final retentionMs = retentionHours * 3600 * 1000;
-    final expires = retentionMs == 0
-        ? now.millisecondsSinceEpoch + 60000
-        : ((point.ts * 1000 + retentionMs) / 60000).ceil() * 60000; // rounded to the minute
-    final e = WireEvent(
-      deviceId: myId,
-      eventId: eventId,
-      epoch: _epoch,
-      payload: crypto.encryptLocation(_locationKey, ctx, point),
-      expiresAt: expires,
-      store: retentionMs > 0,
-    );
-    _addFix(myId, point);
-    if (connected && _live != null) {
-      _live!.send({'type': 'publish', 'events': [e.toPublishJson()]});
-    } else {
-      _queue.add(e);
-      if (_queue.length > AppConfig.maxQueue) _queue.removeAt(0);
+  // ------------------------------------------------------------------ background reliability
+
+  /// Re-reads whether Android lets the service keep running and restart on its own.
+  Future<void> refreshReliability() async {
+    try {
+      batteryExempt = await tracker.batteryExempt;
+      locationPermission = await Geolocator.checkPermission();
+    } catch (_) {
+      // Leave the last known values.
     }
+    notifyListeners();
+  }
+
+  /// True until the battery explanation has been shown once.
+  bool get shouldExplainBattery => !batteryExempt && !(_prefs.getBool('battery_explained') ?? false);
+
+  Future<void> markBatteryExplained() => _prefs.setBool('battery_explained', true);
+
+  Future<void> requestBatteryExemption() async {
+    await tracker.requestBatteryExemption();
+    await refreshReliability();
+  }
+
+  /// Asks for "Allow all the time", which Android needs before a location service may restart
+  /// itself. On Android 11+ this opens the system settings page.
+  Future<void> requestBackgroundLocation() async {
+    if (locationPermission == LocationPermission.deniedForever) {
+      await Geolocator.openAppSettings();
+    } else {
+      await Geolocator.requestPermission();
+    }
+    await refreshReliability();
+  }
+
+  Future<void> setRestartOnBoot(bool on) async {
+    restartOnBoot = on;
+    await _prefs.setBool('restart_on_boot', on);
+    if (sharingActive) await _restartTracking();
     notifyListeners();
   }
 
@@ -519,7 +592,7 @@ class AppState extends ChangeNotifier {
       connected = true;
       _backoff = 2;
       error = null;
-      await _flushQueue();
+      if (sharingActive) tracker.flush(); // the network is back: deliver anything still queued
     } on BackendException catch (e) {
       error = e.status == 403 ? 'You are no longer a member of this group' : 'Server error: ${e.code}';
       _scheduleReconnect();
@@ -528,14 +601,6 @@ class AppState extends ChangeNotifier {
       _scheduleReconnect();
     }
     notifyListeners();
-  }
-
-  Future<void> _flushQueue() async {
-    while (_queue.isNotEmpty) {
-      final batch = _queue.take(200).toList();
-      await _backend!.publish(groupId!, batch);
-      _queue.removeRange(0, batch.length);
-    }
   }
 
   void _onClosed() {
@@ -588,23 +653,8 @@ class AppState extends ChangeNotifier {
   @override
   void dispose() {
     _reconnect?.cancel();
-    unawaited(tracker.stop());
+    tracker.unlisten(_onServiceData); // the service itself keeps running without the UI
     unawaited(_live?.close());
     super.dispose();
   }
-}
-
-String formatInterval(int s) {
-  if (s < 60) return '$s s';
-  if (s < 3600) return s % 60 == 0 ? '${s ~/ 60} min' : '${(s / 60).toStringAsFixed(1)} min';
-  return s % 3600 == 0 ? '${s ~/ 3600} h' : '${(s / 3600).toStringAsFixed(1)} h';
-}
-
-String formatAgo(DateTime t) {
-  final d = DateTime.now().difference(t);
-  if (d.inSeconds < 10) return 'now';
-  if (d.inSeconds < 60) return '${d.inSeconds} s ago';
-  if (d.inMinutes < 60) return '${d.inMinutes} min ago';
-  if (d.inHours < 24) return '${d.inHours} h ago';
-  return '${d.inDays} d ago';
 }

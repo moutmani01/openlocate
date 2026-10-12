@@ -86,6 +86,18 @@ class WireEvent {
       );
 
   Map<String, dynamic> toPublishJson() => {'event_id': eventId, 'epoch': epoch, 'payload': payload, 'expires_at': expiresAt, 'store': store};
+
+  /// Form kept in the on-device queue until the event is delivered.
+  Map<String, dynamic> toQueueJson() => {'device_id': deviceId, ...toPublishJson()};
+
+  factory WireEvent.fromQueueJson(Map<String, dynamic> j) => WireEvent(
+        deviceId: j['device_id'] as String,
+        eventId: j['event_id'] as String,
+        epoch: (j['epoch'] as num).toInt(),
+        payload: j['payload'] as String,
+        expiresAt: (j['expires_at'] as num?)?.toInt(),
+        store: j['store'] as bool? ?? true,
+      );
 }
 
 class HistoryPage {

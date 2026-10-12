@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../config.dart';
 import '../location/tracker.dart';
@@ -91,6 +92,9 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const Divider(),
+          _Header('Background reliability'),
+          _Reliability(state: s),
+          const Divider(),
           _Header('History'),
           RadioGroup<int>(
             groupValue: s.retentionHours,
@@ -167,4 +171,81 @@ class _Header extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
         child: Text(text, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Theme.of(context).colorScheme.primary)),
       );
+}
+
+/// Shows whether Android will let sharing keep running, and offers the fixes.
+class _Reliability extends StatefulWidget {
+  const _Reliability({required this.state});
+
+  final AppState state;
+
+  @override
+  State<_Reliability> createState() => _ReliabilityState();
+}
+
+class _ReliabilityState extends State<_Reliability> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    widget.state.refreshReliability();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  // The answers change in the system settings, so read them again on the way back.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) widget.state.refreshReliability();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = widget.state;
+    final always = s.locationPermission == LocationPermission.always;
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(s.batteryExempt ? Icons.battery_full : Icons.battery_alert),
+          title: const Text('Battery optimisation'),
+          subtitle: Text(
+            s.batteryExempt
+                ? 'Not restricted. Sharing can keep running with the screen off.'
+                : 'Restricted. Android may stop sharing without warning. Tap to allow.',
+          ),
+          onTap: s.batteryExempt ? null : s.requestBatteryExemption,
+        ),
+        ListTile(
+          leading: Icon(always ? Icons.my_location : Icons.location_searching),
+          title: const Text('Location access'),
+          subtitle: Text(
+            always
+                ? 'Allowed all the time. Sharing can restart by itself.'
+                : 'Only while in use. If Android stops sharing, it stays off until you open the app. '
+                    'Tap and choose “Allow all the time” to let it restart by itself.',
+          ),
+          onTap: always ? null : s.requestBackgroundLocation,
+        ),
+        SwitchListTile(
+          secondary: const Icon(Icons.restart_alt),
+          title: const Text('Resume sharing after a restart'),
+          subtitle: Text(always ? 'Start sharing again when the phone is switched on.' : 'Needs location access all the time.'),
+          value: s.restartOnBoot && always,
+          onChanged: always ? s.setRestartOnBoot : null,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+          child: Text(
+            'Some phones (Xiaomi, Huawei, Samsung, OnePlus) close background apps on their own. '
+            'If sharing still stops, look up your model on dontkillmyapp.com.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ],
+    );
+  }
 }
