@@ -4,6 +4,10 @@ export interface Env {
   MAX_RETENTION_DAYS?: string;
   /** CORS origin for the web client. Auth is by signature, not cookies, so "*" is safe. */
   ALLOWED_ORIGIN?: string;
+  /** Optional per-IP limit on creating groups (each group is its own storage). */
+  CREATE_LIMITER?: RateLimit;
+  /** Optional per-IP limit on all requests. */
+  REQUEST_LIMITER?: RateLimit;
 }
 
 /** Headers the Worker sets after verifying a request; the Durable Object trusts only these. */
