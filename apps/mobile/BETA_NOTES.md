@@ -5,8 +5,18 @@
 2. Open it and allow *Install unknown apps* for your browser/files app when asked.
 3. Updating from an earlier beta: if Android says the app "conflicts with an existing package", uninstall the old beta first (beta builds are not yet signed with a fixed key).
 
+### New in beta.3
+- **Relay choice.** Creating a group asks for the **Default relay** (run by the project) or a
+  **Private relay** (your own server, which must use https). The relay only ever sees encrypted
+  updates and when they arrive. Each group stays on its relay; people you invite use it
+  automatically. Settings shows which relay your group uses.
+- The default relay now limits how many groups and requests one address can make per minute.
+- No crash fix yet: the "app stopped" crash is still being investigated. If it happens, the
+  commands in `docs/RELIABILITY.md` capture what Android recorded about it.
+
 ### Try it with two phones
-1. Phone A: enter your name and the server address, tap **Create group**.
+1. Phone A: enter your name, keep **Default relay** (or pick **Private relay** and enter your
+   server), tap **Create group**.
 2. Phone A: tap the invite icon (top right) to show a QR code.
 3. Phone B: enter a name, tap **Scan an invitation**, scan the code.
 4. On each phone, turn on **Can see me** for the other person, then the main **Sharing** switch.
