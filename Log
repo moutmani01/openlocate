@@ -1,0 +1,338 @@
+```
+type: logcat
+osVersion: google/tegu/tegu:17/CP3A.261005.005/2026101601:user/release-keys
+package: org.openlocate.openlocate:16, targetSdk 36
+buffers: main,system,crash,events,kernel
+level: verbose
+
+--------- beginning of main
+10-22 01:02:56.594 21950 21950 I libc    : SetHeapTaggingLevel: tag level set to 0
+10-22 01:02:56.599 21950 21950 I Zygote  : Process 21950 created for org.openlocate.openlocate
+10-22 01:02:56.599 21950 21950 I cate.openlocate: Using generational CollectorTypeCMC GC.
+10-22 01:02:56.607 21950 21950 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-22 01:02:56.633 21950 21950 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+10-22 01:02:56.655 21950 21950 D DynCodeLoading: AppBindFlags: 0
+10-22 01:02:56.656 21950 21950 I Typeface: Preloading /system/fonts/Roboto-Regular.ttf
+10-22 01:02:56.656 21950 21950 I Typeface: Preloading /system/fonts/RobotoStatic-Regular.ttf
+10-22 01:02:56.667 21950 21950 I SystemFonts: Loading font config from /system/etc/fonts.xml
+10-22 01:02:56.721 21950 21950 D AssetManager: reusing systemIdmapPaths
+10-22 01:02:56.778 21950 21950 D nativeloader: InitApexLibraries:
+10-22 01:02:56.778 21950 21950 D nativeloader:   com_android_art: libnativehelper.so
+10-22 01:02:56.778 21950 21950 D nativeloader:   com_android_i18n: libicui18n.so:libicuuc.so:libicu.so
+10-22 01:02:56.778 21950 21950 D nativeloader:   com_android_neuralnetworks: libneuralnetworks.so
+10-22 01:02:56.778 21950 21950 D nativeloader: InitDefaultPublicLibraries for_preload=0: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libclang_rt.hwasan-aarch64-android.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-22 01:02:56.778 21950 21950 D nativeloader: Configuring clns-1 for other apk /system_ext/framework/androidx.window.extensions.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64:/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.openlocate.openlocate
+10-22 01:02:56.778 21950 21950 D nativeloader: InitExtendedPublicLibraries:
+10-22 01:02:56.779 21950 21950 D nativeloader: InitApexLibraries:
+10-22 01:02:56.779 21950 21950 D nativeloader:
+10-22 01:02:56.780 21950 21950 D nativeloader: InitVendorPublicLibraries: libOpenCL.so:libOpenCL-pixel.so:libedgetpu_client.google.so:libedgetpu_util.so:lib_aion_buffer.so:lib_jpg_encoder.so:libgxp.so:libedgetpu_tachyon.google.so:libedgetpu_litert.so
+10-22 01:02:56.780 21950 21950 D nativeloader: InitProductPublicLibraries:
+10-22 01:02:56.784 21950 21950 D nativeloader: Configuring clns-2 for other apk /system_ext/framework/androidx.window.sidecar.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64:/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.openlocate.openlocate
+10-22 01:02:56.798 21950 21950 D nativeloader: Configuring clns-3 for other apk /data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64:/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.openlocate.openlocate
+10-22 01:02:56.805 21950 21950 D nativeloader: Load libframework-connectivity-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity.jar: ok
+10-22 01:02:56.808 21950 21950 V GraphicsEnvironment: Currently set values for:
+10-22 01:02:56.808 21950 21950 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[com.android.angle]
+10-22 01:02:56.808 21950 21950 V GraphicsEnvironment:   angle_gl_driver_selection_values=[angle]
+10-22 01:02:56.808 21950 21950 V GraphicsEnvironment: org.openlocate.openlocate is not listed in per-application setting
+10-22 01:02:56.808 21950 21950 V GraphicsEnvironment: No special selections for ANGLE, returning default driver choice
+10-22 01:02:56.810 21950 21950 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+10-22 01:02:56.818 21950 21950 D nativeloader: Configuring clns-shared-4 for other apk /system/app/GmsCompatLib/GmsCompatLib.apk. target_sdk_version=37, uses_libraries=, library_path=/system/app/GmsCompatLib/lib/arm64:/system/lib64:/system_ext/lib64, permitted_path=/data:/mnt/expand::/system/app/GmsCompatLib:/system/lib64:/system_ext/lib64
+10-22 01:02:56.819 21950 21950 D GmcLib  : init: pkg: org.openlocate.openlocate, process: org.openlocate.openlocate
+--------- beginning of system
+10-22 01:02:56.845 21950 21965 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+--------- switch to main
+10-22 01:02:56.982 21950 21965 D vulkan  : searching for layers in '/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64'
+10-22 01:02:56.982 21950 21965 D vulkan  : searching for layers in '/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a'
+10-22 01:02:57.001 21950 21970 D nativeloader: Load /data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-3 (caller=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk): ok
+10-22 01:02:57.015 21950 21975 D skia    : [SkFontMgr Android Parser] '/product/etc/fonts_customization.xml' could not be opened
+--------- beginning of events
+10-22 01:02:57.014 21950 21950 I auditd  : avc=type=1400 audit(0.0:28227): avc:  denied  { read } for  comm="cate.openlocate" name="max_map_count" dev="proc" ino=3850229 scontext=u:r:untrusted_app_34:s0:c244,c256,c512,c768 tcontext=u:object_r:proc_max_map_count:s0 tclass=file permissive=0 app=org.openlocate.openlocate
+--------- switch to main
+10-22 01:02:57.014 21950 21950 W cate.openlocate: type=1400 audit(0.0:28227): avc:  denied  { read } for  name="max_map_count" dev="proc" ino=3850229 scontext=u:r:untrusted_app_34:s0:c244,c256,c512,c768 tcontext=u:object_r:proc_max_map_count:s0 tclass=file permissive=0 app=org.openlocate.openlocate
+10-22 01:02:57.043 21950 21976 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+10-22 01:02:57.186 21950 21950 D nativeloader: Load /data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a/libdartjni.so using class loader ns clns-3 (caller=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk): ok
+10-22 01:02:57.252 21950 21950 D CompatChangeReporter: Compat change id reported: 377864165; UID 10244; state: ENABLED
+--------- switch to events
+10-22 01:02:57.255 21950 21950 I wm_on_create_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=performCreate,time=382ms]
+10-22 01:02:57.256 21950 21950 I wm_on_start_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=handleStartActivity,time=0ms]
+10-22 01:02:57.258 21950 21950 I wm_on_resume_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=RESUME_ACTIVITY,time=1ms]
+--------- switch to main
+10-22 01:02:57.297 21950 21950 E flutter : [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: PlatformException(PlatformException, java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", Exception in Java: java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;"
+10-22 01:02:57.297 21950 21950 E flutter : java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;"
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.MessageQueue.nativePollOnce(Native Method)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.MessageQueue.nextLegacy(MessageQueue.java:871)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.MessageQueue.next(MessageQueue.java:773)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.Looper.loopOnce(Looper.java:232)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.Looper.loop(Looper.java:397)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.app.ActivityThread.main(ActivityThread.java:9569)
+10-22 01:02:57.297 21950 21950 E flutter : 	at java.lang.reflect.Method.invoke(Native Method)
+10-22 01:02:57.297 21950 21950 E flutter : 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-22 01:02:57.297 21950 21950 E flutter : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:977)
+10-22 01:02:57.297 21950 21950 E flutter : , java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;"
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.MessageQueue.nativePollOnce(Native Method)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.MessageQueue.nextLegacy(MessageQueue.java:871)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.MessageQueue.next(MessageQueue.java:773)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.Looper.loopOnce(Looper.java:232)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.os.Looper.loop(Looper.java:397)
+10-22 01:02:57.297 21950 21950 E flutter : 	at android.app.ActivityThread.main(ActivityThread.java:9569)
+10-22 01:02:57.297 21950 21950 E flutter : 	at java.lang.reflect.Method.invoke(Native Method)
+10-22 01:02:57.297 21950 21950 E flutter : 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-22 01:02:57.297 21950 21950 E flutter : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:977)
+10-22 01:02:57.297 21950 21950 E flutter : )
+10-22 01:02:57.297 21950 21950 E flutter :
+--------- switch to events
+10-22 01:02:57.297 21950 21950 I wm_on_top_resumed_gained_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+--------- switch to main
+10-22 01:02:57.299 21950 21950 D FlutterGeolocator: Creating service.
+10-22 01:02:57.299 21950 21950 D FlutterGeolocator: Binding to location service.
+10-22 01:02:57.300 21950 21950 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda1@9a3f247
+10-22 01:02:57.302 21950 21950 I WindowExtensionsImpl: Initializing Window Extensions, vendor API level=10, activity embedding enabled=true
+10-22 01:02:57.308 21950 21950 W UiContextUtils: Requested context is a non-UI Context. Creating a UI-Context with display: 0. Context: Context=android.app.Application@3b4d3, of which baseContext=android.app.ContextImpl@2232a4b
+10-22 01:02:57.312 21950 21950 D VRI[MainActivity]: WindowInsets changed: 1080x2424 statusBars:[0,152,0,0] navigationBars:[0,0,0,63] mandatorySystemGestures:[0,184,0,84]
+10-22 01:02:57.318 21950 21950 I Surface : Creating surface for consumer unnamed-21950-0 with slotExpansion=1 for 64 slots
+10-22 01:02:57.319 21950 21950 I Surface : Creating surface for consumer VRI[MainActivity]#0(BLAST Consumer)0 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:02:57.319 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:02:57.322 21950 21950 D nativeloader: Load libstats_jni.so using APEX ns com_android_os_statsd for caller /apex/com.android.os.statsd/javalib/framework-statsd.jar: ok
+--------- switch to events
+10-22 01:02:57.326 21950 21950 I surfaceview_layout: [window=SV[52870269 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=1]
+--------- switch to main
+10-22 01:02:57.327 21950 21950 I Surface : Creating surface for consumer unnamed-21950-1 with slotExpansion=1 for 64 slots
+10-22 01:02:57.327 21950 21950 I Surface : Creating surface for consumer 326bc7d SurfaceView[org.openlocate.openlocate/org.openlocate.openlocate.MainActivity]#1(BLAST Consumer)1 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:02:57.327 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceCreated]
+10-22 01:02:57.471 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceChanged -- format=4 w=1080 h=2424]
+10-22 01:02:57.471 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceRedrawNeeded]
+10-22 01:02:57.472 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=Canceling draw. cancelDueToPreDrawListener=true cancelDueToSync=false]
+--------- switch to main
+10-22 01:02:57.475 21950 21950 D FlutterGeolocator: Flutter engine connected. Connected engine count 1
+10-22 01:02:57.477 21950 21950 D WindowLayoutComponentImpl: Register WindowLayoutInfoListener on Context=org.openlocate.openlocate.MainActivity@d3c97c3, of which baseContext=android.app.ContextImpl@c85a8be
+10-22 01:03:02.296 21950 22003 D ProfileInstaller: Installing profile for org.openlocate.openlocate
+--------- switch to events
+10-22 01:03:26.302 21950 21950 I wm_on_top_resumed_lost_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:03:26.305 21950 21950 I wm_on_paused_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=performPause,time=0ms]
+--------- switch to main
+10-22 01:03:26.321 21950 21950 D VRI[MainActivity]: visibilityChanged oldVisibility=true newVisibility=false
+--------- switch to events
+10-22 01:03:26.329 21950 21950 I surfaceview_layout: [window=SV[52870269 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=0]
+10-22 01:03:26.330 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceDestroyed]
+10-22 01:03:26.350 21950 21950 I wm_on_stop_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=STOP_ACTIVITY_ITEM,time=1ms]
+10-22 01:03:26.360 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:03:26.360 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=Not drawing due to not visible. Reason=!mAppVisible && !mForceDecorViewVisibility]
+10-22 01:03:55.821 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:03:56.731 21950 21950 I wm_on_restart_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=performRestart,time=0ms]
+10-22 01:03:56.731 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:03:56.731 21950 21950 I wm_on_start_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=handleStartActivity,time=0ms]
+10-22 01:03:56.736 21950 21950 I wm_on_resume_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=RESUME_ACTIVITY,time=4ms]
+10-22 01:03:56.736 21950 21950 I wm_on_top_resumed_gained_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=topWhenResuming]
+10-22 01:03:56.743 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:03:56.745 21950 21950 I Surface : Creating surface for consumer unnamed-21950-2 with slotExpansion=1 for 64 slots
+10-22 01:03:56.746 21950 21950 I Surface : Creating surface for consumer VRI[MainActivity]#2(BLAST Consumer)2 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:03:56.746 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:03:56.747 21950 21950 I surfaceview_layout: [window=SV[52870269 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=1]
+--------- switch to main
+10-22 01:03:56.749 21950 21950 I Surface : Creating surface for consumer unnamed-21950-3 with slotExpansion=1 for 64 slots
+10-22 01:03:56.749 21950 21950 I Surface : Creating surface for consumer 326bc7d SurfaceView[org.openlocate.openlocate/org.openlocate.openlocate.MainActivity]#3(BLAST Consumer)3 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:03:56.749 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceCreated]
+10-22 01:03:56.783 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceChanged -- format=4 w=1080 h=2424]
+10-22 01:03:56.784 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceRedrawNeeded]
+10-22 01:04:06.411 21950 21950 I wm_on_top_resumed_lost_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:06.416 21950 21950 I wm_on_paused_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=performPause,time=0ms]
+--------- switch to main
+10-22 01:04:06.416 21950 21950 D VRI[MainActivity]: visibilityChanged oldVisibility=true newVisibility=false
+--------- switch to events
+10-22 01:04:06.427 21950 21950 I surfaceview_layout: [window=SV[52870269 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=0]
+10-22 01:04:06.430 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceDestroyed]
+10-22 01:04:06.450 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:06.450 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:06.451 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=Not drawing due to not visible. Reason=!mAppVisible && !mForceDecorViewVisibility]
+10-22 01:04:06.460 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:06.461 21950 21950 I wm_on_stop_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=STOP_ACTIVITY_ITEM,time=2ms]
+10-22 01:04:06.477 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:04:08.160 21950 21950 D ViewRootImpl: Skipping stats log for color mode
+--------- switch to events
+10-22 01:04:08.160 21950 21950 I wm_on_restart_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=performRestart,time=0ms]
+10-22 01:04:08.160 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:08.161 21950 21950 I wm_on_start_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=handleStartActivity,time=1ms]
+10-22 01:04:08.166 21950 21950 I wm_on_resume_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=RESUME_ACTIVITY,time=0ms]
+10-22 01:04:08.166 21950 21950 I wm_on_top_resumed_gained_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:08.175 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:04:08.176 21950 21950 I Surface : Creating surface for consumer unnamed-21950-4 with slotExpansion=1 for 64 slots
+10-22 01:04:08.177 21950 21950 I Surface : Creating surface for consumer VRI[MainActivity]#4(BLAST Consumer)4 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:04:08.177 21950 21950 I viewroot_draw_event: [window=VRI[MainActivity]a9a8772,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:08.177 21950 21950 I surfaceview_layout: [window=SV[52870269 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=1]
+--------- switch to main
+10-22 01:04:08.178 21950 21950 I Surface : Creating surface for consumer unnamed-21950-5 with slotExpansion=1 for 64 slots
+10-22 01:04:08.179 21950 21950 I Surface : Creating surface for consumer 326bc7d SurfaceView[org.openlocate.openlocate/org.openlocate.openlocate.MainActivity]#5(BLAST Consumer)5 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:04:08.179 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceCreated]
+10-22 01:04:08.216 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceChanged -- format=4 w=1080 h=2424]
+10-22 01:04:08.216 21950 21950 I surfaceview_callback: [window=SV[52870269 MainActivity],callback=surfaceRedrawNeeded]
+10-22 01:04:15.131 21950 21950 I wm_on_top_resumed_lost_called: [Token=98150375,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+--------- switch to main
+10-22 01:04:20.923 22071 22071 I libc    : SetHeapTaggingLevel: tag level set to 0
+10-22 01:04:20.927 22071 22071 I Zygote  : Process 22071 created for org.openlocate.openlocate
+10-22 01:04:20.927 22071 22071 I cate.openlocate: Using generational CollectorTypeCMC GC.
+10-22 01:04:20.935 22071 22071 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-22 01:04:20.967 22071 22071 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+10-22 01:04:20.984 22071 22071 D DynCodeLoading: AppBindFlags: 0
+10-22 01:04:20.985 22071 22071 I Typeface: Preloading /system/fonts/Roboto-Regular.ttf
+10-22 01:04:20.985 22071 22071 I Typeface: Preloading /system/fonts/RobotoStatic-Regular.ttf
+10-22 01:04:21.003 22071 22071 I SystemFonts: Loading font config from /system/etc/fonts.xml
+10-22 01:04:21.052 22071 22071 D AssetManager: reusing systemIdmapPaths
+10-22 01:04:21.076 22071 22071 D nativeloader: InitApexLibraries:
+10-22 01:04:21.076 22071 22071 D nativeloader:   com_android_art: libnativehelper.so
+10-22 01:04:21.076 22071 22071 D nativeloader:   com_android_i18n: libicui18n.so:libicuuc.so:libicu.so
+10-22 01:04:21.076 22071 22071 D nativeloader:   com_android_neuralnetworks: libneuralnetworks.so
+10-22 01:04:21.076 22071 22071 D nativeloader: InitDefaultPublicLibraries for_preload=0: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libclang_rt.hwasan-aarch64-android.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-22 01:04:21.076 22071 22071 D nativeloader: Configuring clns-1 for other apk /system_ext/framework/androidx.window.extensions.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64:/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.openlocate.openlocate
+10-22 01:04:21.076 22071 22071 D nativeloader: InitExtendedPublicLibraries:
+10-22 01:04:21.078 22071 22071 D nativeloader: InitApexLibraries:
+10-22 01:04:21.078 22071 22071 D nativeloader:
+10-22 01:04:21.079 22071 22071 D nativeloader: InitVendorPublicLibraries: libOpenCL.so:libOpenCL-pixel.so:libedgetpu_client.google.so:libedgetpu_util.so:lib_aion_buffer.so:lib_jpg_encoder.so:libgxp.so:libedgetpu_tachyon.google.so:libedgetpu_litert.so
+10-22 01:04:21.079 22071 22071 D nativeloader: InitProductPublicLibraries:
+10-22 01:04:21.083 22071 22071 D nativeloader: Configuring clns-2 for other apk /system_ext/framework/androidx.window.sidecar.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64:/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.openlocate.openlocate
+10-22 01:04:21.095 22071 22071 D nativeloader: Configuring clns-3 for other apk /data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64:/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.openlocate.openlocate
+10-22 01:04:21.102 22071 22071 D nativeloader: Load libframework-connectivity-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity.jar: ok
+10-22 01:04:21.106 22071 22071 V GraphicsEnvironment: Currently set values for:
+10-22 01:04:21.106 22071 22071 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[com.android.angle]
+10-22 01:04:21.106 22071 22071 V GraphicsEnvironment:   angle_gl_driver_selection_values=[angle]
+10-22 01:04:21.106 22071 22071 V GraphicsEnvironment: org.openlocate.openlocate is not listed in per-application setting
+10-22 01:04:21.106 22071 22071 V GraphicsEnvironment: No special selections for ANGLE, returning default driver choice
+10-22 01:04:21.106 22071 22071 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+10-22 01:04:21.111 22071 22071 D nativeloader: Configuring clns-shared-4 for other apk /system/app/GmsCompatLib/GmsCompatLib.apk. target_sdk_version=37, uses_libraries=, library_path=/system/app/GmsCompatLib/lib/arm64:/system/lib64:/system_ext/lib64, permitted_path=/data:/mnt/expand::/system/app/GmsCompatLib:/system/lib64:/system_ext/lib64
+10-22 01:04:21.112 22071 22071 D GmcLib  : init: pkg: org.openlocate.openlocate, process: org.openlocate.openlocate
+--------- switch to system
+10-22 01:04:21.132 22071 22087 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+--------- switch to main
+10-22 01:04:21.183 22071 22087 D vulkan  : searching for layers in '/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/lib/arm64'
+10-22 01:04:21.184 22071 22087 D vulkan  : searching for layers in '/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a'
+10-22 01:04:21.212 22071 22090 D nativeloader: Load /data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-3 (caller=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk): ok
+10-22 01:04:21.228 22071 22095 D skia    : [SkFontMgr Android Parser] '/product/etc/fonts_customization.xml' could not be opened
+--------- switch to events
+10-22 01:04:21.222 22071 22071 I auditd  : avc=type=1400 audit(0.0:28232): avc:  denied  { read } for  comm="cate.openlocate" name="max_map_count" dev="proc" ino=3851748 scontext=u:r:untrusted_app_34:s0:c244,c256,c512,c768 tcontext=u:object_r:proc_max_map_count:s0 tclass=file permissive=0 app=org.openlocate.openlocate
+--------- switch to main
+10-22 01:04:21.222 22071 22071 W cate.openlocate: type=1400 audit(0.0:28232): avc:  denied  { read } for  name="max_map_count" dev="proc" ino=3851748 scontext=u:r:untrusted_app_34:s0:c244,c256,c512,c768 tcontext=u:object_r:proc_max_map_count:s0 tclass=file permissive=0 app=org.openlocate.openlocate
+10-22 01:04:21.259 22071 22096 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+10-22 01:04:21.300 22071 22071 D nativeloader: Load /data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk!/lib/arm64-v8a/libdartjni.so using class loader ns clns-3 (caller=/data/app/~~dO4T4NEWTnTHt-_rTNyrZQ==/org.openlocate.openlocate-a32RbAOwa6Poc4SbYdHHuQ==/base.apk): ok
+10-22 01:04:21.334 22071 22071 D CompatChangeReporter: Compat change id reported: 377864165; UID 10244; state: ENABLED
+--------- switch to events
+10-22 01:04:21.335 22071 22071 I wm_on_create_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=performCreate,time=190ms]
+10-22 01:04:21.335 22071 22071 I wm_on_start_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=handleStartActivity,time=0ms]
+10-22 01:04:21.336 22071 22071 I wm_on_resume_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=RESUME_ACTIVITY,time=0ms]
+--------- switch to main
+10-22 01:04:21.362 22071 22071 E flutter : [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: PlatformException(PlatformException, java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", Exception in Java: java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;"
+10-22 01:04:21.362 22071 22071 E flutter : java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;"
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.MessageQueue.nativePollOnce(Native Method)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.MessageQueue.nextLegacy(MessageQueue.java:871)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.MessageQueue.next(MessageQueue.java:773)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.Looper.loopOnce(Looper.java:232)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.Looper.loop(Looper.java:397)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.app.ActivityThread.main(ActivityThread.java:9569)
+10-22 01:04:21.362 22071 22071 E flutter : 	at java.lang.reflect.Method.invoke(Native Method)
+10-22 01:04:21.362 22071 22071 E flutter : 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-22 01:04:21.362 22071 22071 E flutter : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:977)
+10-22 01:04:21.362 22071 22071 E flutter : , java.lang.NoSuchMethodError: no non-static method "Lio/flutter/plugins/sharedpreferences/SharedPreferencesApiRegistrar;.getAll(Ljava/lang/String;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;"
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.MessageQueue.nativePollOnce(Native Method)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.MessageQueue.nextLegacy(MessageQueue.java:871)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.MessageQueue.next(MessageQueue.java:773)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.Looper.loopOnce(Looper.java:232)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.os.Looper.loop(Looper.java:397)
+10-22 01:04:21.362 22071 22071 E flutter : 	at android.app.ActivityThread.main(ActivityThread.java:9569)
+10-22 01:04:21.362 22071 22071 E flutter : 	at java.lang.reflect.Method.invoke(Native Method)
+10-22 01:04:21.362 22071 22071 E flutter : 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-22 01:04:21.362 22071 22071 E flutter : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:977)
+10-22 01:04:21.362 22071 22071 E flutter : )
+10-22 01:04:21.362 22071 22071 E flutter :
+--------- switch to events
+10-22 01:04:21.362 22071 22071 I wm_on_top_resumed_gained_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+--------- switch to main
+10-22 01:04:21.364 22071 22071 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda1@2a6864a
+10-22 01:04:21.366 22071 22071 I WindowExtensionsImpl: Initializing Window Extensions, vendor API level=10, activity embedding enabled=true
+10-22 01:04:21.370 22071 22071 W UiContextUtils: Requested context is a non-UI Context. Creating a UI-Context with display: 0. Context: Context=android.app.Application@82a7487, of which baseContext=android.app.ContextImpl@3a2d99e
+10-22 01:04:21.375 22071 22071 D VRI[MainActivity]: WindowInsets changed: 1080x2424 statusBars:[0,152,0,0] navigationBars:[0,0,0,63] mandatorySystemGestures:[0,184,0,84]
+10-22 01:04:21.380 22071 22071 I Surface : Creating surface for consumer unnamed-22071-0 with slotExpansion=1 for 64 slots
+10-22 01:04:21.381 22071 22071 I Surface : Creating surface for consumer VRI[MainActivity]#0(BLAST Consumer)0 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:04:21.381 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:04:21.382 22071 22071 D nativeloader: Load libstats_jni.so using APEX ns com_android_os_statsd for caller /apex/com.android.os.statsd/javalib/framework-statsd.jar: ok
+--------- switch to events
+10-22 01:04:21.383 22071 22071 I surfaceview_layout: [window=SV[21068088 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=1]
+--------- switch to main
+10-22 01:04:21.384 22071 22071 I Surface : Creating surface for consumer unnamed-22071-1 with slotExpansion=1 for 64 slots
+10-22 01:04:21.385 22071 22071 I Surface : Creating surface for consumer 1417938 SurfaceView[org.openlocate.openlocate/org.openlocate.openlocate.MainActivity]#1(BLAST Consumer)1 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:04:21.385 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceCreated]
+10-22 01:04:21.471 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceChanged -- format=4 w=1080 h=2424]
+10-22 01:04:21.472 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceRedrawNeeded]
+10-22 01:04:21.473 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=Canceling draw. cancelDueToPreDrawListener=true cancelDueToSync=false]
+--------- switch to main
+10-22 01:04:21.474 22071 22071 D FlutterGeolocator: Creating service.
+10-22 01:04:21.475 22071 22071 D FlutterGeolocator: Binding to location service.
+10-22 01:04:21.480 22071 22071 D FlutterGeolocator: Flutter engine connected. Connected engine count 1
+10-22 01:04:21.480 22071 22071 D WindowLayoutComponentImpl: Register WindowLayoutInfoListener on Context=org.openlocate.openlocate.MainActivity@127e76, of which baseContext=android.app.ContextImpl@f200c02
+10-22 01:04:27.016 22071 22123 D ProfileInstaller: Installing profile for org.openlocate.openlocate
+--------- switch to events
+10-22 01:04:50.063 22071 22071 I wm_on_top_resumed_lost_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:50.075 22071 22071 I wm_on_paused_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=performPause,time=1ms]
+10-22 01:04:50.076 22071 22071 I wm_on_resume_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=LIFECYCLER_RESUME_ACTIVITY,time=0ms]
+10-22 01:04:50.079 22071 22071 I wm_on_top_resumed_gained_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:50.096 22071 22071 I wm_on_top_resumed_lost_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:50.113 22071 22071 I wm_on_top_resumed_gained_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:52.411 22071 22071 I wm_on_top_resumed_lost_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:04:52.421 22071 22071 I wm_on_paused_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=performPause,time=1ms]
+--------- switch to main
+10-22 01:04:52.423 22071 22071 D VRI[MainActivity]: visibilityChanged oldVisibility=true newVisibility=false
+--------- switch to events
+10-22 01:04:52.426 22071 22071 I surfaceview_layout: [window=SV[21068088 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=0]
+10-22 01:04:52.428 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceDestroyed]
+10-22 01:04:52.449 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:52.449 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:52.450 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=Not drawing due to not visible. Reason=!mAppVisible && !mForceDecorViewVisibility]
+10-22 01:04:52.454 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:04:52.456 22071 22071 I wm_on_stop_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=STOP_ACTIVITY_ITEM,time=4ms]
+10-22 01:04:52.461 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:05:16.865 22071 22071 D ViewRootImpl: Skipping stats log for color mode
+--------- switch to events
+10-22 01:05:16.867 22071 22071 I wm_on_restart_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=performRestart,time=0ms]
+10-22 01:05:16.869 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:05:16.870 22071 22071 I wm_on_start_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=handleStartActivity,time=3ms]
+10-22 01:05:16.878 22071 22071 I wm_on_resume_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=RESUME_ACTIVITY,time=4ms]
+10-22 01:05:16.879 22071 22071 I wm_on_top_resumed_gained_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:05:16.880 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+--------- switch to main
+10-22 01:05:16.885 22071 22071 I Surface : Creating surface for consumer unnamed-22071-2 with slotExpansion=1 for 64 slots
+10-22 01:05:16.886 22071 22071 I Surface : Creating surface for consumer VRI[MainActivity]#2(BLAST Consumer)2 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:05:16.886 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:05:16.888 22071 22071 I surfaceview_layout: [window=SV[21068088 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=1]
+--------- switch to main
+10-22 01:05:16.890 22071 22071 I Surface : Creating surface for consumer unnamed-22071-3 with slotExpansion=1 for 64 slots
+10-22 01:05:16.891 22071 22071 I Surface : Creating surface for consumer 1417938 SurfaceView[org.openlocate.openlocate/org.openlocate.openlocate.MainActivity]#3(BLAST Consumer)3 with slotExpansion=1 for 64 slots
+--------- switch to events
+10-22 01:05:16.891 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceCreated]
+10-22 01:05:16.948 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceChanged -- format=4 w=1080 h=2424]
+10-22 01:05:16.949 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceRedrawNeeded]
+10-22 01:05:38.596 22071 22071 I wm_on_top_resumed_lost_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=topStateChangedWhenResumed]
+10-22 01:05:38.600 22071 22071 I wm_on_paused_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=performPause,time=1ms]
+--------- switch to main
+10-22 01:05:38.601 22071 22071 D VRI[MainActivity]: visibilityChanged oldVisibility=true newVisibility=false
+--------- switch to events
+10-22 01:05:38.612 22071 22071 I surfaceview_layout: [window=SV[21068088 MainActivity],format=4,width=1080,height=2424,z=-2,sizeFrom=layout,attached=1,lifecycleStrategy=0,viewVisible=0]
+10-22 01:05:38.613 22071 22071 I surfaceview_callback: [window=SV[21068088 MainActivity],callback=surfaceDestroyed]
+10-22 01:05:38.632 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:05:38.632 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:05:38.633 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=Not drawing due to not visible. Reason=!mAppVisible && !mForceDecorViewVisibility]
+10-22 01:05:38.641 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+10-22 01:05:38.642 22071 22071 I wm_on_stop_called: [Token=198113548,Component Name=org.openlocate.openlocate.MainActivity,Reason=STOP_ACTIVITY_ITEM,time=1ms]
+10-22 01:05:38.647 22071 22071 I viewroot_draw_event: [window=VRI[MainActivity]51fdd11,event=applyTransactionOnDraw applyImmediately]
+```
