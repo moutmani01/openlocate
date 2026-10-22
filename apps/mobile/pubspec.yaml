@@ -19,6 +19,10 @@ dependencies:
   mobile_scanner: ^7.4.2
   qr_flutter: ^4.1.0
   shared_preferences: ^2.5.5
+  # 2.5.0 moved to Pigeon JNI, which looks up Kotlin methods by signature at run time. R8 renames
+  # kotlin.coroutines.Continuation in release builds, the lookup fails, and the app never opens
+  # (v0.1.0-beta.3, 2026-10-22). Stay below 2.5 until the plugin ships keep rules.
+  shared_preferences_android: ">=2.4.28 <2.5.0"
   sodium: ^4.1.1
   web_socket_channel: ^3.0.3
   flutter_foreground_task: ^11.0.3
