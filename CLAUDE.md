@@ -14,7 +14,8 @@ and a server that stores only ciphertext. See [README.md](README.md) and the doc
 | Android app (Flutter) | `apps/mobile` | Beta |
 | Backend (Cloudflare Worker + Durable Objects with SQLite) | `backend/cloudflare` | Deployed |
 | Protocol, crypto and client reference (TypeScript) | `packages/` | Implemented, tested |
-| iOS app, web viewer | — | Not started |
+| iOS app (same Flutter code) | `apps/mobile`, `.github/workflows/ios.yml` | First build, simulator only; see [docs/IOS.md](docs/IOS.md) |
+| Web viewer | — | Not started |
 
 ## The owner's priorities
 
@@ -88,6 +89,18 @@ History is stored in one SQLite database per group, inside a Durable Object. Tab
 2. Roadmap rewritten with agreed priorities.
 3. Background sharing service, on-disk queue, battery-exemption prompt, the "Background
    reliability" settings section, and notices when sharing pauses or had stopped.
+
+## iOS
+
+- The owner has an iPhone, no Mac and no paid Apple Developer account (2026-10-22). iOS builds
+  run on GitHub's macOS runners; the release gets an unsigned `.ipa`, installed with SideStore
+  and a free Apple ID (re-signed every 7 days). Install steps: `docs/IOS.md`.
+- Only `lib/` and `test/` are committed for iOS. The workflow runs `flutter create --platforms
+  ios` and adds the permission texts and the `location` background mode with PlistBuddy.
+- iOS runs `SharingEngine` inside the app (`Tracker` checks `Platform.isIOS`); Android runs it in
+  the foreground service. Keep platform differences in `Tracker` and the settings screen.
+- Owner's choice: match Android. Background sharing with "While Using" now; relaunch after a
+  swipe-away with "Always" (native significant-location-change code) is next.
 
 ## Reliability work
 
