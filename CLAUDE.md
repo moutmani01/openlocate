@@ -40,9 +40,11 @@ order.
   `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 - **Checks.** Root: `npm ci`, `npm run typecheck`, `npm test`. App, in `apps/mobile`:
   `flutter analyze --no-fatal-infos` and `flutter test`.
-- **Only part of the app is committed.** In `apps/mobile`, only `lib/`, `test/`, `pubspec.yaml`
-  and the customised `AndroidManifest.xml` are tracked. CI generates the rest with
-  `flutter create`. Running Flutter locally creates files such as `pubspec.lock`,
+- **Only part of the app is committed.** In `apps/mobile`, only `lib/`, `test/`, `pubspec.yaml`,
+  `pubspec.lock` and the customised `AndroidManifest.xml` are tracked. The lock file is committed
+  since 2026-10-22 so CI builds the dependency versions that were tested: beta.3 picked up
+  `shared_preferences_android` 2.5.x unseen and did not open. CI generates the rest with
+  `flutter create`. Running Flutter locally creates files such as
   `android/local.properties` and `.flutter-plugins-dependencies`, and may edit
   `analysis_options.yaml`: do not commit those.
 - **Facts.** Do not invent claims about security or battery life. Measure, or say it is untested.

@@ -125,6 +125,24 @@ The crash was reported on builds that tracked location inside the app, before th
 existed. If it never appears on beta.2, the evidence above will show that; the earlier suspects
 (restarting tracking at launch, no error handling at start-up) no longer apply as written.
 
+## Found: beta.3 does not open (2026-10-22)
+
+The owner's phone (Android 17, Pixel) log showed, at every launch:
+`NoSuchMethodError: no non-static method "…SharedPreferencesApiRegistrar;.getAll(…Lkotlin/coroutines/Continuation;)…"`.
+
+- **Cause.** CI resolves dependencies fresh (`pubspec.lock` was not committed), so beta.3 got
+  `shared_preferences_android` 2.5.1. Since 2.5.0 that plugin calls its Kotlin code through JNI,
+  looking methods up by their exact signature. Release builds run R8, which renamed
+  `kotlin.coroutines.Continuation` (to `xl` in the beta.3 APK, checked with `dexdump`), so the
+  lookup fails. The error was thrown inside `main()` before `runApp`, so the launch screen stayed
+  up with no message.
+- **Why the emulator did not show it.** The emulator tests used debug builds, which R8 does not
+  touch, with the locally resolved 2.4.28.
+- **Fix.** Pin `shared_preferences_android` below 2.5, commit `pubspec.lock`, and show an error
+  screen if start-up fails. Checked with a release build (R8 on) on the Android 15 emulator: the
+  app opens and shows the relay choice.
+- **Lesson.** Test release builds, not debug builds, before tagging.
+
 ## Emulator results (2026-10-21)
 
 Android 15 emulator (API 35, x86_64), beta.2 code built as a debug APK, "while in use" location

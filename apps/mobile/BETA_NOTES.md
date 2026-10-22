@@ -5,6 +5,10 @@
 2. Open it and allow *Install unknown apps* for your browser/files app when asked.
 3. Updating from an earlier beta: if Android says the app "conflicts with an existing package", uninstall the old beta first (beta builds are not yet signed with a fixed key).
 
+### New in beta.4
+- **Fixes beta.3 not opening.** A library update made the app stop at its launch screen. If
+  start-up ever fails again, the app now shows an error message to report instead.
+
 ### New in beta.3
 - **Relay choice.** Creating a group asks for the **Default relay** (run by the project) or a
   **Private relay** (your own server, which must use https). The relay only ever sees encrypted
