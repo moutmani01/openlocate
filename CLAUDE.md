@@ -34,7 +34,7 @@ order.
   every pull request that touches `apps/mobile`; the owner installs it and tests on a phone
   before merging.
 - **Releases.** Pushing a tag `v*` builds the APK and publishes a GitHub pre-release with
-  `apps/mobile/BETA_NOTES.md` as its notes. Tags so far: `v0.1.0-beta.1`, `v0.1.0-beta.2`, `v0.1.0-beta.3` (2026-10-22: relay choice, per-IP relay limits; no crash fix).
+  `apps/mobile/BETA_NOTES.md` as its notes. Tags so far: `v0.1.0-beta.1`, `v0.1.0-beta.2`, `v0.1.0-beta.3` (2026-10-22: relay choice, per-IP relay limits; did not open), `v0.1.0-beta.4` (2026-10-22: fixes beta.3 not opening).
 - **Backend deploys itself.** A push to `main` that touches `backend/cloudflare/**` or
   `packages/protocol/**` runs the "Deploy backend" workflow, which uses the repository secrets
   `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
