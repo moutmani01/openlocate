@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -178,7 +180,7 @@ class _Header extends StatelessWidget {
       );
 }
 
-/// Shows whether Android will let sharing keep running, and offers the fixes.
+/// Shows whether the system will let sharing keep running, and offers the fixes.
 class _Reliability extends StatefulWidget {
   const _Reliability({required this.state});
 
@@ -212,6 +214,24 @@ class _ReliabilityState extends State<_Reliability> with WidgetsBindingObserver 
   Widget build(BuildContext context) {
     final s = widget.state;
     final always = s.locationPermission == LocationPermission.always;
+    if (Platform.isIOS) {
+      return Column(
+        children: [
+          ListTile(
+            leading: Icon(always ? Icons.my_location : Icons.location_searching),
+            title: const Text('Location access'),
+            subtitle: Text(
+              always
+                  ? 'Always. Sharing continues in the background.'
+                  : 'While using the app. Sharing continues in the background while the blue location '
+                      'indicator shows. If you close OpenLocate from the app switcher, sharing stops '
+                      'until you open it again.',
+            ),
+            onTap: always ? null : s.requestBackgroundLocation,
+          ),
+        ],
+      );
+    }
     return Column(
       children: [
         ListTile(

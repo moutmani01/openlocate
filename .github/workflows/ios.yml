@@ -1,0 +1,129 @@
+name: iOS
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths:
+      - "apps/mobile/**"
+      - "packages/crypto/test/vectors.json"
+      - ".github/workflows/ios.yml"
+  pull_request:
+    paths:
+      - "apps/mobile/**"
+      - "packages/crypto/test/vectors.json"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write # to attach the IPA to pre-releases for v* tags
+
+jobs:
+  ipa:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: apps/mobile
+        shell: bash
+    env:
+      BUNDLE_ID: org.openlocate.openlocate
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Version
+        id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "name=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=0.1.0-dev.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Only lib/ and test/ are committed for iOS; this generates the standard Xcode project and
+      # then adds what OpenLocate needs to its Info.plist.
+      - name: Generate platform files
+        run: |
+          flutter create --platforms ios --org org.openlocate --project-name openlocate .
+          P=ios/Runner/Info.plist
+          pb() { /usr/libexec/PlistBuddy -c "$1" "$P"; }
+          pb "Add :NSLocationWhenInUseUsageDescription string OpenLocate shares your location, encrypted, with the people you choose."
+          pb "Add :NSLocationAlwaysAndWhenInUseUsageDescription string With Always, iOS can keep sharing your location with the people you choose when OpenLocate is closed."
+          pb "Add :NSCameraUsageDescription string The camera scans invitation QR codes."
+          pb "Add :UIBackgroundModes array"
+          pb "Add :UIBackgroundModes:0 string location"
+          plutil -lint "$P"
+
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter test
+
+      # Simulators run debug builds only. This checks that the app starts and stays up on iOS,
+      # which is what failed on Android in beta.3.
+      - name: Smoke test on the simulator
+        run: |
+          flutter build ios --simulator --debug \
+            --dart-define=APP_VERSION="${{ steps.version.outputs.name }}" \
+            --dart-define=BACKEND_URL="${{ vars.BACKEND_URL }}"
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          d = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in d if "iOS" in k), key=lambda k: [int(x) for x in k.split("iOS-")[1].split("-")])
+          phones = [x for x in d[ios[-1]] if x["name"].startswith("iPhone")]
+          print(phones[0]["udid"])')
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" build/ios/iphonesimulator/Runner.app
+          xcrun simctl privacy "$UDID" grant location "$BUNDLE_ID" || true
+          xcrun simctl location "$UDID" set 33.5731,-7.5898 || true
+          xcrun simctl launch --console-pty "$UDID" "$BUNDLE_ID" > launch.log 2>&1 &
+          sleep 45
+          xcrun simctl io "$UDID" screenshot ../../ios-simulator.png
+          cat launch.log
+          if grep -E "Unhandled Exception|could not start|Fatal error|EXC_" launch.log; then
+            echo "::error title=iOS smoke test::the app reported an error at start-up"; exit 1
+          fi
+          xcrun simctl spawn "$UDID" launchctl list | grep -q "$BUNDLE_ID" || {
+            echo "::error title=iOS smoke test::the app is not running 45 s after launch"; exit 1; }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-simulator-screenshot
+          path: ios-simulator.png
+          if-no-files-found: ignore
+
+      # Unsigned: install it with SideStore or AltStore, which sign it with your own Apple ID.
+      - name: Build unsigned IPA
+        run: |
+          flutter build ios --release --no-codesign \
+            --build-name 0.1.0 \
+            --build-number "${GITHUB_RUN_NUMBER}" \
+            --dart-define=APP_VERSION="${{ steps.version.outputs.name }}" \
+            --dart-define=BACKEND_URL="${{ vars.BACKEND_URL }}"
+          mkdir -p Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry "openlocate-${{ steps.version.outputs.name }}-unsigned.ipa" Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openlocate-ios-${{ steps.version.outputs.name }}
+          path: apps/mobile/openlocate-*-unsigned.ipa
+
+      # The Android workflow creates the release; wait for it, then add the IPA.
+      - name: Attach to pre-release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 40); do
+            gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 && break
+            sleep 30
+          done
+          gh release upload "$GITHUB_REF_NAME" "openlocate-${{ steps.version.outputs.name }}-unsigned.ipa" \
+            --repo "$GITHUB_REPOSITORY" --clobber
