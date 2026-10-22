@@ -18,3 +18,29 @@ new_sqlite_classes = ["GroupDurableObject"]
 # Hard upper bound on stored history, in days (clients choose shorter retention per event).
 MAX_RETENTION_DAYS = "90"
 ALLOWED_ORIGIN = "*"
+
+# Abuse limits per IP address, counted separately in each Cloudflare location. Self-hosters can
+# delete these blocks; the Worker runs without them. Periods can only be 10 or 60 seconds.
+[[ratelimits]]
+name = "CREATE_LIMITER"
+namespace_id = "4711"
+  [ratelimits.simple]
+  limit = 3
+  period = 60
+
+[[ratelimits]]
+name = "REQUEST_LIMITER"
+namespace_id = "4712"
+  [ratelimits.simple]
+  limit = 300
+  period = 60
+
+# Used by the test suite: the same Worker without the per-IP limits. Bindings and vars are not
+# inherited by environments, so they are repeated here.
+[env.test]
+[[env.test.durable_objects.bindings]]
+name = "GROUP"
+class_name = "GroupDurableObject"
+[env.test.vars]
+MAX_RETENTION_DAYS = "90"
+ALLOWED_ORIGIN = "*"

@@ -16,6 +16,15 @@ function cors(env: Env, res: Response): Response {
   return r;
 }
 
+async function allowed(limiter: RateLimit | undefined, key: string): Promise<boolean> {
+  if (!limiter) return true; // not configured (self-hosted or tests): no limit
+  try {
+    return (await limiter.limit({ key })).success;
+  } catch {
+    return true; // never lock everyone out because the limiter itself failed
+  }
+}
+
 async function handle(req: Request, env: Env): Promise<Response> {
   const url = new URL(req.url);
   if (req.method === "OPTIONS") return new Response(null, { status: 204 });
@@ -30,6 +39,12 @@ async function handle(req: Request, env: Env): Promise<Response> {
   const groupId = m[1]!;
   const sub = m[2] ?? "";
   const isWs = sub === "/ws";
+
+  // Abuse limits for a server whose address is public. The address is used only as the counter's
+  // key and is never stored or logged by this code.
+  const ip = req.headers.get("cf-connecting-ip") ?? "";
+  if (ip && !(await allowed(env.REQUEST_LIMITER, ip))) return error(429, "rate_limited");
+  if (ip && req.method === "PUT" && sub === "" && !(await allowed(env.CREATE_LIMITER, ip))) return error(429, "rate_limited");
 
   let body = new Uint8Array(0);
   if (isWs) {

@@ -49,10 +49,16 @@ order.
 
 ## The owner's server
 
-The backend is deployed on the owner's Cloudflare account as the Worker named `openlocate`.
-Its address is deliberately not written here: the server is not gated yet, so anyone who knows
-the address can create groups on it. Find it in the Cloudflare dashboard under Workers & Pages.
-Gating it is on the roadmap.
+The backend is deployed on the owner's Cloudflare account as the Worker named `openlocate`, at
+`https://openlocate.mahfoudoutmani0.workers.dev`. Since 2026-10-21 it is the app's **default
+relay** (the owner's decision): CI release builds get it through the repository variable
+`BACKEND_URL`, and people can choose a **private relay** (their own server) when creating a
+group. The address is therefore public. It is still not gated, so it relies on per-IP limits
+(group creation 3 a minute, all requests 300 a minute, per Cloudflare location, in
+`backend/cloudflare/wrangler.toml`) on top of the per-group limits. Gating is on the roadmap.
+
+Each group stays on the relay it was created on; invitations carry that relay's address, so
+people who join use it automatically.
 
 History is stored in one SQLite database per group, inside a Durable Object. Tables: `events`
 (encrypted location payloads with an expiry), `members`, `cards`, `invitations`, `nonces`.
@@ -80,6 +86,13 @@ History is stored in one SQLite database per group, inside a Durable Object. Tab
 2. Roadmap rewritten with agreed priorities.
 3. Background sharing service, on-disk queue, battery-exemption prompt, the "Background
    reliability" settings section, and notices when sharing pauses or had stopped.
+
+## Reliability work
+
+`docs/RELIABILITY.md` holds the freshness target, the `adb` commands for collecting evidence from
+a phone, the ranked crash suspects and the emulator results. An Android 15 emulator runs on the
+owner's machine (SDK in `/root/sdk/android`, JDK 21 in `/root/sdk/jdk21`, AVD `api35`); see that
+file for the flags it needs.
 
 ## Open items
 

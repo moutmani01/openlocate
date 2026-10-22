@@ -113,7 +113,9 @@ before they leave the phone, so even your own server can't read them.
 
 ### Step 5 — Use it in the app
 1. Install the app ([Releases](https://github.com/moutmani01/openlocate/releases) page, on your Android phone).
-2. Enter your name, paste your server address into **Server**, and tap **Create group**.
+2. Enter your name, choose **Private relay**, paste your server address, and tap **Create group**.
+   (Without your own server, **Default relay** uses the project's relay, which sees only
+   encrypted updates and when they arrive.)
 3. Tap the invite icon and let family members scan the QR code. Their phones use your server
    automatically — they don't need to type anything.
 

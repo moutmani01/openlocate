@@ -130,7 +130,12 @@ class SettingsScreen extends StatelessWidget {
             title: const Text('Your safety number'),
             subtitle: SelectableText(s.safetyNumber, style: const TextStyle(fontFamily: 'monospace')),
           ),
-          ListTile(leading: const Icon(Icons.dns_outlined), title: const Text('Server'), subtitle: Text(s.backendUrl)),
+          ListTile(
+            leading: const Icon(Icons.dns_outlined),
+            title: Text(s.backendUrl == AppConfig.backendUrl ? 'Default relay' : 'Private relay'),
+            subtitle: Text('${s.backendUrl}\nThis group stays on this relay. To use another, create a new group there.'),
+            isThreeLine: true,
+          ),
           ListTile(leading: const Icon(Icons.info_outline), title: const Text('Version'), subtitle: Text(AppConfig.appVersion)),
           const Divider(),
           ListTile(

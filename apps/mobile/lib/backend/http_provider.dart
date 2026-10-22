@@ -39,6 +39,28 @@ class HttpProvider implements BackendProvider {
     return res.statusCode == 204 || res.body.isEmpty ? null : jsonDecode(res.body);
   }
 
+  /// Checks that [baseUrl] is an OpenLocate relay this app can use. Returns a user-facing problem,
+  /// or null. Unsigned, and sends nothing about the user.
+  static Future<String?> checkRelay(String baseUrl, {bool allowHttp = false, http.Client? client}) async {
+    final uri = Uri.tryParse(baseUrl);
+    if (uri == null || !uri.hasAuthority) return 'Enter the relay\'s full address, starting with https://';
+    if (uri.scheme != 'https' && !(allowHttp && uri.scheme == 'http')) return 'The relay address must start with https://';
+    final c = client ?? http.Client();
+    try {
+      final res = await c.get(Uri.parse('${baseUrl.replaceAll(RegExp(r'/+$'), '')}/v1/info')).timeout(const Duration(seconds: 10));
+      if (res.statusCode != 200) return 'No OpenLocate relay answers at this address (${res.statusCode}).';
+      final info = jsonDecode(res.body);
+      if (info is! Map || info['protocol_version'] != 1) return 'This relay runs a version this app does not support.';
+      return null;
+    } on FormatException {
+      return 'No OpenLocate relay answers at this address.';
+    } catch (_) {
+      return 'Could not reach the relay. Check the address and your connection.';
+    } finally {
+      if (client == null) c.close();
+    }
+  }
+
   @override
   Future<GroupState> createGroup(String groupId) async =>
       GroupState.fromJson(await _call('PUT', _g(groupId), {'member': crypto.memberKeys(identity).toJson()}) as Map<String, dynamic>);

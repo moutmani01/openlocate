@@ -61,8 +61,10 @@ even a TLS-intercepting proxy only sees ciphertext and can't forge requests.
 
 **Abuse / resource exhaustion.** Per-device token bucket, 256 KiB body cap, batch ≤ 200, max 50
 members, max 20 active invitations, per-device event cap (oldest dropped), server-side
-retention cap. Unknown group ids don't allocate storage. *Future:* per-IP rate limiting at the
-edge for group creation.
+retention cap. Unknown group ids don't allocate storage. Per-IP limits at the edge (Cloudflare's rate
+limiting binding) on group creation and on all requests. The IP address is only the counter's key
+and is never stored or logged by the Worker. The project's default relay has a public address,
+so these limits are what stand between it and cheap abuse until gating exists.
 
 ## Logging rules
 Never log coordinates, payloads, card envelopes, keys, signatures or auth headers. The Worker

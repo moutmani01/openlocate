@@ -1,6 +1,8 @@
 /// Build-time configuration. Never hard-code a production backend; pass it with
 /// `--dart-define=BACKEND_URL=https://...` or set it in the app's settings.
 class AppConfig {
+  /// The default relay offered when creating a group. Release builds made by the project's CI set
+  /// it to the project's relay; builds without it offer only "Private relay".
   static const backendUrl = String.fromEnvironment('BACKEND_URL');
   static const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: 'dev');
 

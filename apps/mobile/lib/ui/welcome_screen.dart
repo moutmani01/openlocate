@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../backend/http_provider.dart';
+import '../config.dart';
 import '../main.dart';
 import 'scan_screen.dart';
 import 'widgets.dart';
@@ -14,7 +17,10 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   late final _name = TextEditingController(text: AppScope.of(context).displayName);
-  late final _server = TextEditingController(text: AppScope.of(context).backendUrl);
+  late final _server = TextEditingController(
+      text: AppScope.of(context).backendUrl == AppConfig.backendUrl ? '' : AppScope.of(context).backendUrl);
+  // Builds without a default relay (self-built) can only use a private one.
+  late bool _private = AppConfig.backendUrl.isEmpty || _server.text.isNotEmpty;
   final _group = TextEditingController(text: 'Family');
   bool _busy = false;
 
@@ -37,7 +43,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<void> _create() => _run(() async {
         final s = AppScope.of(context);
-        await s.setBackendUrl(_server.text);
+        final relay = _private ? _server.text.trim() : AppConfig.backendUrl;
+        final problem = await HttpProvider.checkRelay(relay, allowHttp: kDebugMode);
+        if (problem != null) throw FormatException(problem);
+        await s.setBackendUrl(relay);
         await s.createGroup(_group.text);
       });
 
@@ -84,16 +93,39 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             const SizedBox(height: 8),
             TextField(controller: _group, decoration: const InputDecoration(labelText: 'Group name', border: OutlineInputBorder())),
             const SizedBox(height: 12),
-            TextField(
-              controller: _server,
-              keyboardType: TextInputType.url,
-              decoration: const InputDecoration(
-                labelText: 'Server',
-                hintText: 'https://openlocate.example.workers.dev',
-                helperText: 'Your OpenLocate backend. People you invite use it automatically.',
-                border: OutlineInputBorder(),
-              ),
+            Text('Relay', style: theme.textTheme.labelLarge),
+            const SizedBox(height: 4),
+            Text(
+              'The relay passes encrypted updates between your group\'s phones. It sees when updates arrive and from '
+              'which device, but never where anyone is. People you invite use the same relay automatically.',
+              style: theme.textTheme.bodySmall,
             ),
+            const SizedBox(height: 8),
+            if (AppConfig.backendUrl.isNotEmpty)
+              SegmentedButton<bool>(
+                segments: const [
+                  ButtonSegment(value: false, label: Text('Default relay'), icon: Icon(Icons.public)),
+                  ButtonSegment(value: true, label: Text('Private relay'), icon: Icon(Icons.dns_outlined)),
+                ],
+                selected: {_private},
+                onSelectionChanged: _busy ? null : (v) => setState(() => _private = v.first),
+              ),
+            const SizedBox(height: 12),
+            if (_private)
+              TextField(
+                controller: _server,
+                keyboardType: TextInputType.url,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  labelText: 'Private relay address',
+                  hintText: 'https://openlocate.example.workers.dev',
+                  helperText: 'A relay you run yourself. The README explains how to set one up for free.',
+                  helperMaxLines: 2,
+                  border: OutlineInputBorder(),
+                ),
+              )
+            else
+              Text('Run by the OpenLocate project: ${Uri.parse(AppConfig.backendUrl).host}', style: theme.textTheme.bodySmall),
             const SizedBox(height: 12),
             OutlinedButton.icon(
               onPressed: _busy ? null : _create,

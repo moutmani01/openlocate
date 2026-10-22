@@ -8,12 +8,17 @@ import { HttpProvider, newSharingState, type SharingState } from "@openlocate/cl
 import { createIdentity, initCrypto, joinBinding, memberKeys, newInvite, type DeviceIdentity } from "@openlocate/crypto";
 import { toB64url, type GroupState, type ServerMessage } from "@openlocate/protocol";
 
-/** Runs the real Worker (from wrangler.toml) in local workerd with SQLite Durable Objects. */
-export async function startBackend(): Promise<{ url: string; dispose: () => Promise<void> }> {
+/**
+ * Runs the real Worker (from wrangler.toml) in local workerd with SQLite Durable Objects.
+ * By default it uses the `test` environment, which leaves out the per-IP abuse limits (every test
+ * request comes from one address); pass `limits: true` to run with them.
+ */
+export async function startBackend(opts: { limits?: boolean } = {}): Promise<{ url: string; dispose: () => Promise<void> }> {
   await initCrypto();
   const dir = fileURLToPath(new URL("..", import.meta.url));
   const worker = await unstable_dev(join(dir, "src/index.ts"), {
     config: join(dir, "wrangler.toml"),
+    env: opts.limits ? undefined : "test",
     ip: "127.0.0.1",
     persistTo: mkdtempSync(join(tmpdir(), "openlocate-test-")),
     logLevel: "warn",
