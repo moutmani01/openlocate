@@ -424,7 +424,7 @@ class AppState extends ChangeNotifier {
         error = 'Could not start sharing: $problem';
       }
     } else {
-      await tracker.stop();
+      await tracker.stopSharing();
       serviceProblem = null;
     }
     notifyListeners();
