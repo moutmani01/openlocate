@@ -5,6 +5,15 @@
 2. Open it and allow *Install unknown apps* for your browser/files app when asked.
 3. Updating from an earlier beta: if Android says the app "conflicts with an existing package", uninstall the old beta first (beta builds are not yet signed with a fixed key).
 
+### New in beta.5
+- **First iPhone build** (`openlocate-…-unsigned.ipa`). It is unsigned: install it with SideStore
+  or AltStore, which sign it with your own Apple ID (see `docs/IOS.md`). With a free Apple ID,
+  refresh it in SideStore at least every 7 days.
+- On iPhone, sharing continues in the background while the blue location indicator shows. If you
+  close OpenLocate from the app switcher, sharing stops until you open it again.
+- First iPhone test build: not yet tested on a real iPhone.
+- Android: the sharing service now runs the same shared code as iOS; behaviour is unchanged.
+
 ### New in beta.4
 - **Fixes beta.3 not opening.** A library update made the app stop at its launch screen. If
   start-up ever fails again, the app now shows an error message to report instead.
@@ -40,7 +49,7 @@
   time" location access so Android can restart sharing by itself, optional resume after reboot
 
 ### Known limitations
-- Android only; iOS comes later.
+- iOS: unsigned build only, installed with SideStore/AltStore; no relaunch after a swipe-away yet.
 - Received locations are kept in memory only; they are fetched from the server again when the app opens.
 - If Android kills the app outright, sharing restarts by itself only when battery optimisation is
   off **and** location access is "Allow all the time". Otherwise it resumes when you open the app,
