@@ -76,7 +76,8 @@ jobs:
             --build-name 0.1.0 \
             --build-number "${GITHUB_RUN_NUMBER}" \
             --dart-define=APP_VERSION="${{ steps.version.outputs.name }}" \
-            --dart-define=BACKEND_URL="${{ vars.BACKEND_URL }}"
+            --dart-define=BACKEND_URL="${{ vars.BACKEND_URL }}" \
+            --split-debug-info=build/symbols
           mv build/app/outputs/flutter-apk/app-release.apk "openlocate-${{ steps.version.outputs.name }}.apk"
 
       - uses: actions/upload-artifact@v4
@@ -84,12 +85,24 @@ jobs:
           name: openlocate-${{ steps.version.outputs.name }}
           path: apps/mobile/openlocate-*.apk
 
+      # Debug symbols for this exact build, so crash and ANR stacks from phones can be turned into
+      # function names (`flutter symbolize`). The code is open source; the symbols reveal nothing new.
+      - name: Package debug symbols
+        run: cd build/symbols && zip -qr "../../openlocate-${{ steps.version.outputs.name }}-symbols.zip" .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: symbols-${{ steps.version.outputs.name }}
+          path: apps/mobile/openlocate-*-symbols.zip
+          retention-days: 90
+
       - name: Publish pre-release
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" "openlocate-${{ steps.version.outputs.name }}.apk" \
+            "openlocate-${{ steps.version.outputs.name }}-symbols.zip" \
             --repo "$GITHUB_REPOSITORY" \
             --prerelease \
             --title "OpenLocate ${{ steps.version.outputs.name }}" \

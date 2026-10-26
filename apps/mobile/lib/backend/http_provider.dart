@@ -116,7 +116,13 @@ class HttpProvider implements BackendProvider {
     final wsBase = base.replaceFirst(RegExp('^http'), 'ws');
     final uri = Uri.parse(wsBase + path).replace(queryParameters: crypto.signWebSocket(identity, path));
     final channel = IOWebSocketChannel.connect(uri, pingInterval: const Duration(seconds: 50));
-    await channel.ready.timeout(const Duration(seconds: 20));
+    try {
+      await channel.ready.timeout(const Duration(seconds: 20));
+    } catch (_) {
+      // Otherwise every failed attempt leaves a half-open connection behind, once per retry.
+      unawaited(channel.sink.close());
+      rethrow;
+    }
     var closed = false;
     void done() {
       if (!closed) {
