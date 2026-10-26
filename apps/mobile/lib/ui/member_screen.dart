@@ -31,6 +31,10 @@ class MemberScreen extends StatefulWidget {
 }
 
 class _MemberScreenState extends State<MemberScreen> {
+  // Built once: a TileLayer made in build() creates a new tile downloader (with its own HTTP
+  // client) on every rebuild, and only the last one is ever closed. Rebuilt every few seconds,
+  // that leaked memory until Android reported the app as not responding (beta.4, 2026-10-26).
+  final _tiles = TileLayer(urlTemplate: AppConfig.tileUrl, userAgentPackageName: 'org.openlocate.openlocate');
   _Range _range = _Range.today;
 
   @override
@@ -59,7 +63,7 @@ class _MemberScreenState extends State<MemberScreen> {
                 initialCameraFit: points.length > 1 ? CameraFit.coordinates(coordinates: points, padding: const EdgeInsets.all(40)) : null,
               ),
               children: [
-                TileLayer(urlTemplate: AppConfig.tileUrl, userAgentPackageName: 'org.openlocate.openlocate'),
+                _tiles,
                 if (points.length > 1)
                   PolylineLayer(polylines: [Polyline(points: points, strokeWidth: 4, color: Avatar.colorFor(id))]),
                 MarkerLayer(markers: [

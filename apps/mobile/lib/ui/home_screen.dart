@@ -22,6 +22,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _map = MapController();
+  // Built once: a TileLayer made in build() creates a new tile downloader (with its own HTTP
+  // client) on every rebuild, and only the last one is ever closed. Rebuilt every few seconds,
+  // that leaked memory until Android reported the app as not responding (beta.4, 2026-10-26).
+  final _tiles = TileLayer(urlTemplate: AppConfig.tileUrl, userAgentPackageName: 'org.openlocate.openlocate');
   Timer? _clock;
   bool _centered = false;
 
@@ -111,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mapController: _map,
               options: const MapOptions(initialCenter: LatLng(33.5731, -7.5898), initialZoom: 11),
               children: [
-                TileLayer(urlTemplate: AppConfig.tileUrl, userAgentPackageName: 'org.openlocate.openlocate'),
+                _tiles,
                 MarkerLayer(markers: markers),
                 const SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
               ],

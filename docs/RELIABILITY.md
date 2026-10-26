@@ -125,6 +125,26 @@ The crash was reported on builds that tracked location inside the app, before th
 existed. If it never appears on beta.2, the evidence above will show that; the earlier suspects
 (restarting tracking at launch, no error handling at start-up) no longer apply as written.
 
+## Open: beta.4 stops responding after hours (2026-10-26)
+
+Phone log (Pixel, Android 17, beta.4 = version code 19): an ANR ("Input dispatching timed out"
+after 5 s), not a crash. The process used 1.5 GB (peak 4.1 GB). The UI thread was in Dart code
+waiting on a lock inside the Flutter engine, and Android's own diagnostic thread was blocked in
+`malloc`: memory exhaustion, not a deadlock in our logic.
+
+- **Not symbolizable.** CI did not keep debug symbols, and a local rebuild of the same commit
+  with the same Flutter version gives a different build ID. CI now publishes
+  `openlocate-<version>-symbols.zip` with every build and release.
+- **Ruled out by measurement.** Suspect: `TileLayer` built inside `build()`, which creates a new
+  HTTP client per rebuild. On the Android 15 emulator, 60 rebuilds with map panning grew the
+  process from 196 to 200 MB with no growth in open sockets. Not the cause at that scale. The
+  layer is now built once per screen anyway, as flutter_map recommends.
+- **Fixed, but small.** A WebSocket that did not open within 20 s was never closed, once per
+  reconnect attempt.
+- **Next.** Memory over time on the phone: `adb shell dumpsys meminfo org.openlocate.openlocate`
+  every 10 minutes with a real group and sharing on, to see which part (native, Dart, graphics)
+  grows.
+
 ## Found: beta.3 does not open (2026-10-22)
 
 The owner's phone (Android 17, Pixel) log showed, at every launch:
